@@ -1,18 +1,19 @@
 package chien.demo.shopdemo.service;
 
-import chien.demo.shopdemo.model.Customer;
+import chien.demo.shopdemo.dto.CustomerDTO;
+import chien.demo.shopdemo.exception.CustomerNotFoundException;
 
 import java.util.List;
 
 public interface CustomerService {
-    List<Customer> getAllCustomers();
+    List<CustomerDTO> findAll();
 
-    Customer createCustomer(Customer customer);
+    CustomerDTO create(CustomerDTO dto);
 
-    Customer updateCustomer(int id, Customer customer);
+    CustomerDTO update(int id, CustomerDTO dto) throws CustomerNotFoundException;
 
-    void deleteCustomer(int id);
+    void delete(int id) throws CustomerNotFoundException;
 
-    Customer getCustomerById(int id);
+    CustomerDTO findById(int id) throws CustomerNotFoundException;
 
 }

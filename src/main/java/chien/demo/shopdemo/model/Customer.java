@@ -3,13 +3,12 @@ package chien.demo.shopdemo.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Data
 @Entity
 @Table(name = "customers")
 //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Customer implements Serializable {
+public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

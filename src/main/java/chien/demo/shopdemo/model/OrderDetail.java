@@ -3,12 +3,11 @@ package chien.demo.shopdemo.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Data
 @Entity
 @Table(name = "orderDetails")
-public class OrderDetail implements Serializable {
+public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

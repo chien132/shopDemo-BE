@@ -4,13 +4,12 @@ import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.sql.Date;
 
 @Data
 @Entity
 @Table(name = "cartDetails")
-public class CartDetail implements Serializable {
+public class CartDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -24,6 +23,6 @@ public class CartDetail implements Serializable {
     private Item item;
 
     private int quantity;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date dateAdded;
 }

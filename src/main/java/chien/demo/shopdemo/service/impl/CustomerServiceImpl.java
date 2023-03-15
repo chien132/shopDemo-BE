@@ -1,51 +1,63 @@
 package chien.demo.shopdemo.service.impl;
 
+import chien.demo.shopdemo.dto.CustomerDTO;
+import chien.demo.shopdemo.exception.CustomerNotFoundException;
+import chien.demo.shopdemo.mapper.CustomerMapper;
 import chien.demo.shopdemo.model.Customer;
 import chien.demo.shopdemo.repository.CustomerRepository;
 import chien.demo.shopdemo.service.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
+@Transactional(rollbackFor = Throwable.class)
 public class CustomerServiceImpl implements CustomerService {
-    private final CustomerRepository customerRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
-    public CustomerServiceImpl(CustomerRepository customerRepository) {
-        super();
-        this.customerRepository = customerRepository;
+    @Override
+    public List<CustomerDTO> findAll() {
+        return customerRepository.findAll().stream().map(customer ->
+                CustomerMapper.getInstance().toDTO(customer)).collect(Collectors.toList());
     }
 
     @Override
-    public List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
+    public CustomerDTO create(CustomerDTO dto) {
+        Customer customer = CustomerMapper.getInstance().toEntity(dto);
+        return CustomerMapper.getInstance().toDTO(customerRepository.save(customer));
     }
 
     @Override
-    public Customer createCustomer(Customer customer) {
-        return customerRepository.save(customer);
+    public CustomerDTO update(int id, CustomerDTO dto) throws CustomerNotFoundException {
+        Customer dbCustomer = customerRepository.findById(id)
+                .orElseThrow(() -> new CustomerNotFoundException(id));
+        dbCustomer.setUsername(dto.getUsername());
+        dbCustomer.setPassword(dto.getPassword());
+        dbCustomer.setType(dto.isType());
+        return CustomerMapper.getInstance().toDTO(customerRepository.save(dbCustomer));
     }
 
     @Override
-    public Customer updateCustomer(int id, Customer customer) {
-        Customer dbCustomer = customerRepository.findById(id);
-        dbCustomer.setUsername(customer.getUsername());
-        dbCustomer.setPassword(customer.getPassword());
-        dbCustomer.setType(customer.isType());
-        return customerRepository.save(customer);
-    }
-
-    @Override
-    public void deleteCustomer(int id) {
-        Customer customer = customerRepository.findById(id);
+    public void delete(int id) throws CustomerNotFoundException {
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() -> new CustomerNotFoundException(id));
         customerRepository.delete(customer);
     }
 
     @Override
-    public Customer getCustomerById(int id) {
-        Customer result = customerRepository.findById(id);
-        return result;
+    public CustomerDTO findById(int id) throws CustomerNotFoundException {
+        Optional<Customer> result = customerRepository.findById(id);
+        if (result.isPresent()) {
+            return CustomerMapper.getInstance().toDTO(result.get());
+        } else {
+            throw new CustomerNotFoundException(id);
+        }
+//        return CustomerMapper.INSTANCE.toDTO(customerRepository.findById(id).get());
     }
 }
