@@ -1,59 +1,71 @@
 package chien.demo.shopdemo.service.impl;
 
-import chien.demo.shopdemo.dto.OrderDTO;
+import chien.demo.shopdemo.dto.OrderDto;
 import chien.demo.shopdemo.mapper.CustomerMapper;
 import chien.demo.shopdemo.mapper.OrderMapper;
 import chien.demo.shopdemo.model.Order;
 import chien.demo.shopdemo.repository.OrderRepository;
 import chien.demo.shopdemo.service.OrderService;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+/** The type Order service. */
 @Service
 @Transactional(rollbackFor = Throwable.class)
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
-    private OrderRepository orderRepository;
+  @Autowired private OrderRepository orderRepository;
 
-    @Override
-    public List<OrderDTO> findAll() {
-        return orderRepository.findAll().stream().map(order ->
-                OrderMapper.getInstance().toDTO(order)).collect(Collectors.toList());
-    }
+  @Override
+  public List<OrderDto> findAll() {
+    return orderRepository.findAll().stream()
+        .map(order -> OrderMapper.getInstance().toDto(order))
+        .collect(Collectors.toList());
+  }
 
-    @Override
-    public List<OrderDTO> findAllByCustomer_Id(int id) {
-        return orderRepository.findAllByCustomer_Id(id).stream().map(order ->
-                OrderMapper.getInstance().toDTO(order)).collect(Collectors.toList());
-    }
+  @Override
+  public List<OrderDto> findAllByCustomerId(int id) {
+    return orderRepository.findAllByCustomerId(id).stream()
+        .map(order -> OrderMapper.getInstance().toDto(order))
+        .collect(Collectors.toList());
+  }
 
-    @Override
-    public OrderDTO create(OrderDTO dto) {
-        Order order = OrderMapper.getInstance().toEntity(dto);
-        return OrderMapper.getInstance().toDTO(orderRepository.save(order));
-    }
+  @Override
+  public OrderDto create(OrderDto dto) {
+    Order order = OrderMapper.getInstance().toEntity(dto);
+    return OrderMapper.getInstance().toDto(orderRepository.save(order));
+  }
 
-    @Override
-    public OrderDTO update(int id, OrderDTO dto) {
-        Order order = orderRepository.findById(id).get();
-        order.setCustomer(CustomerMapper.getInstance().toEntity(dto.getCustomer()));
-        order.setOrderDate(dto.getOrderDate());
-        return OrderMapper.getInstance().toDTO(orderRepository.save(order));
-    }
+  @Override
+  public OrderDto update(int id, OrderDto dto) {
+    Optional<Order> result = orderRepository.findById(id);
+    Order order = result.orElseGet(Order::new);
+    order.setId(id);
+    order.setCustomer(CustomerMapper.getInstance().toEntity(dto.getCustomer()));
+    order.setOrderDate(dto.getOrderDate());
+    return OrderMapper.getInstance().toDto(orderRepository.save(order));
+  }
 
-    @Override
-    public void delete(int id) {
-        Order order = orderRepository.findById(id).get();
-        orderRepository.delete(order);
+  @Override
+  public void delete(int id) {
+    Optional<Order> result = orderRepository.findById(id);
+    if (result.isPresent()) {
+      Order order = result.get();
+      orderRepository.delete(order);
     }
+  }
 
-    @Override
-    public OrderDTO findById(int id) {
-        return OrderMapper.getInstance().toDTO(orderRepository.findById(id).get());
+  @Override
+  public OrderDto findById(int id) {
+    Optional<Order> result = orderRepository.findById(id);
+    if (result.isPresent()) {
+      return OrderMapper.getInstance().toDto(result.get());
+    } else {
+      return null;
     }
+  }
 }

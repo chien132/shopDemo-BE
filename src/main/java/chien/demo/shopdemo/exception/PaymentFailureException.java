@@ -1,4 +1,4 @@
 package chien.demo.shopdemo.exception;
 
-public class PaymentFailureException extends Exception{
-}
+/** The type Payment failure exception. */
+public class PaymentFailureException extends Exception {}

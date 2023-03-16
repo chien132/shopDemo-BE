@@ -1,33 +1,51 @@
 package chien.demo.shopdemo.mapper;
 
-import chien.demo.shopdemo.dto.ItemDTO;
+import chien.demo.shopdemo.dto.ItemDto;
 import chien.demo.shopdemo.model.Item;
-import chien.demo.shopdemo.model.OrderDetail;
 
+/** The type Item mapper. */
 public class ItemMapper {
 
-    public static ItemMapper INSTANCE;
+  /** The constant INSTANCE. */
+  private static ItemMapper instance;
 
-    public static ItemMapper getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new ItemMapper();
-        }
-        return INSTANCE;
+  /**
+   * Gets instance.
+   *
+   * @return the instance
+   */
+  public static ItemMapper getInstance() {
+    if (instance == null) {
+      instance = new ItemMapper();
     }
+    return instance;
+  }
 
-    public Item toEntity(ItemDTO itemDTO) {
-        Item item = new Item();
-        item.setId(itemDTO.getId());
-        item.setName(itemDTO.getName());
-        item.setPrice(itemDTO.getPrice());
-        return item;
-    }
+  /**
+   * To entity item.
+   *
+   * @param itemDto the item dto
+   * @return the item
+   */
+  public Item toEntity(ItemDto itemDto) {
+    Item item = new Item();
+    item.setId(itemDto.getId());
+    item.setName(itemDto.getName());
+    item.setPrice(itemDto.getPrice());
+    return item;
+  }
 
-    public ItemDTO toDTO(Item item) {
-        ItemDTO itemDTO = new ItemDTO();
-        itemDTO.setId(item.getId());
-        itemDTO.setName(item.getName());
-        itemDTO.setPrice(item.getPrice());
-        return itemDTO;
-    }
+  /**
+   * To dto item dto.
+   *
+   * @param item the item
+   * @return the item dto
+   */
+  public ItemDto toDto(Item item) {
+    ItemDto itemDto = new ItemDto();
+    itemDto.setId(item.getId());
+    itemDto.setName(item.getName());
+    itemDto.setPrice(item.getPrice());
+    return itemDto;
+  }
 }

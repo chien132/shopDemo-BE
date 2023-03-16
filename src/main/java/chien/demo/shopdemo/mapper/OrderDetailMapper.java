@@ -1,33 +1,52 @@
 package chien.demo.shopdemo.mapper;
 
-import chien.demo.shopdemo.dto.OrderDetailDTO;
+import chien.demo.shopdemo.dto.OrderDetailDto;
 import chien.demo.shopdemo.model.OrderDetail;
 
+/** The type Order detail mapper. */
 public class OrderDetailMapper {
-    public static OrderDetailMapper INSTANCE;
+  /** The constant INSTANCE. */
+  private static OrderDetailMapper instance;
 
-    public static OrderDetailMapper getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new OrderDetailMapper();
-        }
-        return INSTANCE;
+  /**
+   * Gets instance.
+   *
+   * @return the instance
+   */
+  public static OrderDetailMapper getInstance() {
+    if (instance == null) {
+      instance = new OrderDetailMapper();
     }
+    return instance;
+  }
 
-    public OrderDetail toEntity(OrderDetailDTO orderDetailDTO) {
-        OrderDetail orderDetail = new OrderDetail();
-        orderDetail.setId(orderDetailDTO.getId());
-        orderDetail.setOrder(OrderMapper.getInstance().toEntity(orderDetailDTO.getOrder()));
-        orderDetail.setItem(ItemMapper.getInstance().toEntity(orderDetailDTO.getItem()));
-        orderDetail.setQuantity(orderDetailDTO.getQuantity());
-        return orderDetail;
-    }
+  /**
+   * To entity order detail.
+   *
+   * @param orderDetailDto the order detail dto
+   * @return the order detail
+   */
+  public OrderDetail toEntity(OrderDetailDto orderDetailDto) {
+    OrderDetail orderDetail = new OrderDetail();
+    orderDetail.setId(orderDetailDto.getId());
+    orderDetail.setOrder(OrderMapper.getInstance().toEntity(orderDetailDto.getOrder()));
+    orderDetail.setItem(ItemMapper.getInstance().toEntity(orderDetailDto.getItem()));
+    orderDetail.setQuantity(orderDetailDto.getQuantity());
+    return orderDetail;
+  }
 
-    public OrderDetailDTO toDTO(OrderDetail orderDetail) {
-        OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
-        orderDetailDTO.setId(orderDetail.getId());
-        orderDetailDTO.setOrder(OrderMapper.getInstance().toDTO(orderDetail.getOrder()));
-        orderDetailDTO.setItem(ItemMapper.getInstance().toDTO(orderDetail.getItem()));
-        orderDetailDTO.setQuantity(orderDetail.getQuantity());
-        return orderDetailDTO;
-    }
+  /**
+   * To dto order detail dto.
+   *
+   * @param orderDetail the order detail
+   * @return the order detail dto
+   */
+  public OrderDetailDto toDto(OrderDetail orderDetail) {
+    OrderDetailDto orderDetailDto = new OrderDetailDto();
+    orderDetailDto.setId(orderDetail.getId());
+    orderDetailDto.setOrder(OrderMapper.getInstance().toDto(orderDetail.getOrder()));
+    orderDetailDto.setItem(ItemMapper.getInstance().toDto(orderDetail.getItem()));
+    orderDetailDto.setQuantity(orderDetail.getQuantity());
+    return orderDetailDto;
+  }
 }

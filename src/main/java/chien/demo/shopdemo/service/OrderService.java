@@ -1,20 +1,54 @@
 package chien.demo.shopdemo.service;
 
-import chien.demo.shopdemo.dto.OrderDTO;
-
+import chien.demo.shopdemo.dto.OrderDto;
 import java.util.List;
 
+/** The interface Order service. */
 public interface OrderService {
-    List<OrderDTO> findAll();
+  /**
+   * Find all list.
+   *
+   * @return the list
+   */
+  List<OrderDto> findAll();
 
-    List<OrderDTO> findAllByCustomer_Id(int id);
+  /**
+   * Find all by customer id list.
+   *
+   * @param id the id
+   * @return the list
+   */
+  List<OrderDto> findAllByCustomerId(int id);
 
-    OrderDTO create(OrderDTO dto);
+  /**
+   * Create order dto.
+   *
+   * @param dto the dto
+   * @return the order dto
+   */
+  OrderDto create(OrderDto dto);
 
-    OrderDTO update(int id, OrderDTO dto);
+  /**
+   * Update order dto.
+   *
+   * @param id the id
+   * @param dto the dto
+   * @return the order dto
+   */
+  OrderDto update(int id, OrderDto dto);
 
-    void delete(int id);
+  /**
+   * Delete.
+   *
+   * @param id the id
+   */
+  void delete(int id);
 
-    OrderDTO findById(int id);
-
+  /**
+   * Find by id order dto.
+   *
+   * @param id the id
+   * @return the order dto
+   */
+  OrderDto findById(int id);
 }

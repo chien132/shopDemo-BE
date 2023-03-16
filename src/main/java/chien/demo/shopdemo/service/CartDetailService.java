@@ -1,18 +1,46 @@
 package chien.demo.shopdemo.service;
 
-import chien.demo.shopdemo.dto.CartDetailDTO;
-
+import chien.demo.shopdemo.dto.CartDetailDto;
 import java.util.List;
 
+/** The interface Cart detail service. */
 public interface CartDetailService {
-    List<CartDetailDTO> findAll();
+  /**
+   * Find all list.
+   *
+   * @return the list
+   */
+  List<CartDetailDto> findAll();
 
-    CartDetailDTO create(CartDetailDTO dto);
+  /**
+   * Create cart detail dto.
+   *
+   * @param dto the dto
+   * @return the cart detail dto
+   */
+  CartDetailDto create(CartDetailDto dto);
 
-    CartDetailDTO update(int id, CartDetailDTO dto);
+  /**
+   * Update cart detail dto.
+   *
+   * @param id the id
+   * @param dto the dto
+   * @return the cart detail dto
+   */
+  CartDetailDto update(int id, CartDetailDto dto);
 
-    void delete(int id);
+  /**
+   * Delete.
+   *
+   * @param id the id
+   */
+  void delete(int id);
 
-    CartDetailDTO findById(int id);
-
+  /**
+   * Find by id cart detail dto.
+   *
+   * @param id the id
+   * @return the cart detail dto
+   */
+  CartDetailDto findById(int id);
 }

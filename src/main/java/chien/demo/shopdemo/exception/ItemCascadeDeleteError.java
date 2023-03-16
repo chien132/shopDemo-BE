@@ -1,4 +1,4 @@
 package chien.demo.shopdemo.exception;
 
-public class ItemCascadeDeleteError extends Exception{
-}
+/** The type Item cascade delete error. */
+public class ItemCascadeDeleteError extends Exception {}

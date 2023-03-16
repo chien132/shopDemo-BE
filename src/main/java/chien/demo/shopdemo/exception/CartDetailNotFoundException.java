@@ -1,4 +1,4 @@
 package chien.demo.shopdemo.exception;
 
-public class CartDetailNotFoundException extends Exception {
-}
+/** The type Cart detail not found exception. */
+public class CartDetailNotFoundException extends Exception {}

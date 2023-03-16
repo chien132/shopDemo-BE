@@ -1,36 +1,54 @@
 package chien.demo.shopdemo.mapper;
 
-
-import chien.demo.shopdemo.dto.CartDetailDTO;
+import chien.demo.shopdemo.dto.CartDetailDto;
 import chien.demo.shopdemo.model.CartDetail;
 
+/** The type Cart detail mapper. */
 public class CartDetailMapper {
-    public static CartDetailMapper INSTANCE;
+  /** The constant INSTANCE. */
+  private static CartDetailMapper instance;
 
-    public static CartDetailMapper getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new CartDetailMapper();
-        }
-        return INSTANCE;
+  /**
+   * Gets instance.
+   *
+   * @return the instance
+   */
+  public static CartDetailMapper getInstance() {
+    if (instance == null) {
+      instance = new CartDetailMapper();
     }
+    return instance;
+  }
 
-    public CartDetail toEntity(CartDetailDTO cartDTO) {
-        CartDetail cart = new CartDetail();
-        cart.setId(cartDTO.getId());
-        cart.setItem(ItemMapper.getInstance().toEntity(cartDTO.getItem()));
-        cart.setQuantity(cartDTO.getQuantity());
-        cart.setCart(CartMapper.getInstance().toEntity(cartDTO.getCart()));
-        cart.setDateAdded(cartDTO.getDateAdded());
-        return cart;
-    }
+  /**
+   * To entity cart detail.
+   *
+   * @param cartDto the cart dto
+   * @return the cart detail
+   */
+  public CartDetail toEntity(CartDetailDto cartDto) {
+    CartDetail cart = new CartDetail();
+    cart.setId(cartDto.getId());
+    cart.setItem(ItemMapper.getInstance().toEntity(cartDto.getItem()));
+    cart.setQuantity(cartDto.getQuantity());
+    cart.setCart(CartMapper.getInstance().toEntity(cartDto.getCart()));
+    cart.setDateAdded(cartDto.getDateAdded());
+    return cart;
+  }
 
-    public CartDetailDTO toDTO(CartDetail cart) {
-        CartDetailDTO cartDTO = new CartDetailDTO();
-        cartDTO.setId(cart.getId());
-        cartDTO.setItem(ItemMapper.getInstance().toDTO(cart.getItem()));
-        cartDTO.setQuantity(cart.getQuantity());
-        cartDTO.setCart(CartMapper.getInstance().toDTO(cart.getCart()));
-        cartDTO.setDateAdded(cart.getDateAdded());
-        return cartDTO;
-    }
+  /**
+   * To dto cart detail dto.
+   *
+   * @param cart the cart
+   * @return the cart detail dto
+   */
+  public CartDetailDto toDto(CartDetail cart) {
+    CartDetailDto cartDto = new CartDetailDto();
+    cartDto.setId(cart.getId());
+    cartDto.setItem(ItemMapper.getInstance().toDto(cart.getItem()));
+    cartDto.setQuantity(cart.getQuantity());
+    cartDto.setCart(CartMapper.getInstance().toDto(cart.getCart()));
+    cartDto.setDateAdded(cart.getDateAdded());
+    return cartDto;
+  }
 }

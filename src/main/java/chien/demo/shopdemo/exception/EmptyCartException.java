@@ -1,4 +1,4 @@
 package chien.demo.shopdemo.exception;
 
-public class EmptyCartException extends Exception{
-}
+/** The type Empty cart exception. */
+public class EmptyCartException extends Exception {}

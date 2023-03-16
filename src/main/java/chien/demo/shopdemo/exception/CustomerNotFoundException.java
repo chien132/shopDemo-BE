@@ -1,7 +1,13 @@
 package chien.demo.shopdemo.exception;
 
+/** The type Customer not found exception. */
 public class CustomerNotFoundException extends Exception {
-    public CustomerNotFoundException(int id) {
-        super(String.valueOf(id));
-    }
+  /**
+   * Instantiates a new Customer not found exception.
+   *
+   * @param id the id
+   */
+  public CustomerNotFoundException(int id) {
+    super(String.valueOf(id));
+  }
 }

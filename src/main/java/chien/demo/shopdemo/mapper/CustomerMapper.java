@@ -1,34 +1,53 @@
 package chien.demo.shopdemo.mapper;
 
-import chien.demo.shopdemo.dto.CustomerDTO;
+import chien.demo.shopdemo.dto.CustomerDto;
 import chien.demo.shopdemo.model.Customer;
 
+/** The type Customer mapper. */
 public class CustomerMapper {
 
-    public static CustomerMapper INSTANCE;
+  /** The constant INSTANCE. */
+  private static CustomerMapper instance;
 
-    public static CustomerMapper getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new CustomerMapper();
-        }
-        return INSTANCE;
+  /**
+   * Gets instance.
+   *
+   * @return the instance
+   */
+  public static CustomerMapper getInstance() {
+    if (instance == null) {
+      instance = new CustomerMapper();
     }
+    return instance;
+  }
 
-    public Customer toEntity(CustomerDTO customerDTO) {
-        Customer customer = new Customer();
-        customer.setId(customerDTO.getId());
-        customer.setUsername(customerDTO.getUsername());
-        customer.setPassword(customerDTO.getPassword());
-        customer.setType(customerDTO.isType());
-        return customer;
-    }
-    public CustomerDTO toDTO(Customer customer) {
-        CustomerDTO customerDTO = new CustomerDTO();
-        customerDTO.setId(customer.getId());
-        customerDTO.setUsername(customer.getUsername());
-        customerDTO.setPassword(customer.getPassword());
-        customerDTO.setType(customer.isType());
-        return customerDTO;
-    }
+  /**
+   * To entity customer.
+   *
+   * @param customerDto the customer dto
+   * @return the customer
+   */
+  public Customer toEntity(CustomerDto customerDto) {
+    Customer customer = new Customer();
+    customer.setId(customerDto.getId());
+    customer.setUsername(customerDto.getUsername());
+    customer.setPassword(customerDto.getPassword());
+    customer.setType(customerDto.isType());
+    return customer;
+  }
 
+  /**
+   * To dto customer dto.
+   *
+   * @param customer the customer
+   * @return the customer dto
+   */
+  public CustomerDto toDto(Customer customer) {
+    CustomerDto customerDto = new CustomerDto();
+    customerDto.setId(customer.getId());
+    customerDto.setUsername(customer.getUsername());
+    customerDto.setPassword(customer.getPassword());
+    customerDto.setType(customer.isType());
+    return customerDto;
+  }
 }

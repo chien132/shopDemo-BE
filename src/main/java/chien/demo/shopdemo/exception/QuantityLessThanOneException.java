@@ -1,4 +1,6 @@
 package chien.demo.shopdemo.exception;
 
-public class QuantityLessThanOneException extends Exception{
-}
+/**
+ * The type Quantity less than one exception.
+ */
+public class QuantityLessThanOneException extends Exception {}

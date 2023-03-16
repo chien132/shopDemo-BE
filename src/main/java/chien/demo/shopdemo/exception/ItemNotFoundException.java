@@ -1,4 +1,4 @@
 package chien.demo.shopdemo.exception;
 
-public class ItemNotFoundException extends Exception{
-}
+/** The type Item not found exception. */
+public class ItemNotFoundException extends Exception {}
