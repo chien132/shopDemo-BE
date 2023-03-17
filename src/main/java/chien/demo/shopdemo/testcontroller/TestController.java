@@ -86,7 +86,7 @@ public class TestController {
   @DeleteMapping("customer/{id}")
   public ResponseEntity<HttpStatus> deleteCustomer(@PathVariable(name = "id") int id)
       throws CustomerNotFoundException {
-    customerService.delete(id);
+    customerService.deleteById(id);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 }

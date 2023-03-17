@@ -31,7 +31,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
   @Override
   public OrderDetailDto create(OrderDetailDto dto) {
     OrderDetail orderDetail = OrderDetailMapper.getInstance().toEntity(dto);
-    return OrderDetailMapper.getInstance().toDto(orderDetail);
+    return OrderDetailMapper.getInstance().toDto(orderDetailRepository.save(orderDetail));
   }
 
   @Override
@@ -46,10 +46,10 @@ public class OrderDetailServiceImpl implements OrderDetailService {
   }
 
   @Override
-  public void delete(int id) {
+  public void deleteById(int id) {
     Optional<OrderDetail> result = orderDetailRepository.findById(id);
     if (result.isPresent()) {
-      orderDetailRepository.delete(result.get());
+      orderDetailRepository.deleteById(result.get().getId());
     }
   }
 

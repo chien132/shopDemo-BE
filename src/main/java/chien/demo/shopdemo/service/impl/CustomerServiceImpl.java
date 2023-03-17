@@ -7,7 +7,6 @@ import chien.demo.shopdemo.model.Customer;
 import chien.demo.shopdemo.repository.CustomerRepository;
 import chien.demo.shopdemo.service.CustomerService;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,19 +42,16 @@ public class CustomerServiceImpl implements CustomerService {
   }
 
   @Override
-  public void delete(int id) throws CustomerNotFoundException {
+  public void deleteById(int id) throws CustomerNotFoundException {
     Customer customer =
         customerRepository.findById(id).orElseThrow(() -> new CustomerNotFoundException(id));
-    customerRepository.delete(customer);
+    customerRepository.deleteById(customer.getId());
   }
 
   @Override
   public CustomerDto findById(int id) throws CustomerNotFoundException {
-    Optional<Customer> result = customerRepository.findById(id);
-    if (result.isPresent()) {
-      return CustomerMapper.getInstance().toDto(result.get());
-    } else {
-      throw new CustomerNotFoundException(id);
-    }
+    Customer customer =
+        customerRepository.findById(id).orElseThrow(() -> new CustomerNotFoundException(id));
+    return CustomerMapper.getInstance().toDto(customer);
   }
 }

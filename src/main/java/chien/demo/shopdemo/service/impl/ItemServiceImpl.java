@@ -29,7 +29,7 @@ public class ItemServiceImpl implements ItemService {
   @Override
   public ItemDto create(ItemDto dto) {
     Item item = ItemMapper.getInstance().toEntity(dto);
-    return ItemMapper.getInstance().toDto(item);
+    return ItemMapper.getInstance().toDto(itemRepository.save(item));
   }
 
   @Override
@@ -39,14 +39,14 @@ public class ItemServiceImpl implements ItemService {
     item.setId(id);
     item.setName(dto.getName());
     item.setPrice(dto.getPrice());
-    return ItemMapper.getInstance().toDto(item);
+    return ItemMapper.getInstance().toDto(itemRepository.save(item));
   }
 
   @Override
-  public void delete(int id) {
+  public void deleteById(int id) {
     Optional<Item> result = itemRepository.findById(id);
     if (result.isPresent()) {
-      itemRepository.delete(result.get());
+      itemRepository.deleteById(result.get().getId());
     }
   }
 

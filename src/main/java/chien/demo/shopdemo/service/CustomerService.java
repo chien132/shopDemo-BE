@@ -37,7 +37,7 @@ public interface CustomerService {
    * @param id the id
    * @throws CustomerNotFoundException the customer not found exception
    */
-  void delete(int id) throws CustomerNotFoundException;
+  void deleteById(int id) throws CustomerNotFoundException;
 
   /**
    * Find by id customer dto.

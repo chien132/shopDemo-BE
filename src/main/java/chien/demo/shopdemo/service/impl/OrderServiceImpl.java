@@ -51,11 +51,10 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
-  public void delete(int id) {
+  public void deleteById(int id) {
     Optional<Order> result = orderRepository.findById(id);
     if (result.isPresent()) {
-      Order order = result.get();
-      orderRepository.delete(order);
+      orderRepository.deleteById(result.get().getId());
     }
   }
 

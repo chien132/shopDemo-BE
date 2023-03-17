@@ -34,7 +34,7 @@ public interface OrderDetailService {
    *
    * @param id the id
    */
-  void delete(int id);
+  void deleteById(int id);
 
   /**
    * Find by id order detail dto.

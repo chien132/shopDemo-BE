@@ -30,7 +30,7 @@ public class CartServiceImpl implements CartService {
   @Override
   public CartDto create(CartDto dto) {
     Cart cart = CartMapper.getInstance().toEntity(dto);
-    return CartMapper.getInstance().toDto(cart);
+    return CartMapper.getInstance().toDto(cartRepository.save(cart));
   }
 
   @Override
@@ -39,16 +39,14 @@ public class CartServiceImpl implements CartService {
     Cart cart = result.orElseGet(Cart::new);
     cart.setId(id);
     cart.setCustomer(CustomerMapper.getInstance().toEntity(dto.getCustomer()));
-    return CartMapper.getInstance().toDto(cart);
+    return CartMapper.getInstance().toDto(cartRepository.save(cart));
   }
 
   @Override
-  public void delete(int id) {
+  public void deleteById(int id) {
     Optional<Cart> result = cartRepository.findById(id);
-    Cart cart;
     if (result.isPresent()) {
-      cart = result.get();
-      cartRepository.delete(cart);
+      cartRepository.deleteById(result.get().getId());
     }
   }
 

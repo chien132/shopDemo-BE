@@ -47,12 +47,10 @@ public class CartDetailServiceImpl implements CartDetailService {
   }
 
   @Override
-  public void delete(int id) {
+  public void deleteById(int id) {
     Optional<CartDetail> result = cartDetailRepository.findById(id);
-    CartDetail cartDetail;
     if (result.isPresent()) {
-      cartDetail = result.get();
-      cartDetailRepository.delete(cartDetail);
+      cartDetailRepository.deleteById(result.get().getId());
     }
   }
 

@@ -52,4 +52,10 @@ public class TestOrderController {
     OrderDto responseOrder = orderService.create(testDto);
     return new ResponseEntity<>(responseOrder, HttpStatus.CREATED);
   }
+
+  @GetMapping("/find/{id}")
+  ResponseEntity<OrderDto> findOrder(@PathVariable("id") int id) {
+    OrderDto testDto = orderService.findById(id);
+    return new ResponseEntity<>(testDto, HttpStatus.FOUND);
+  }
 }

@@ -34,7 +34,7 @@ public interface CartDetailService {
    *
    * @param id the id
    */
-  void delete(int id);
+  void deleteById(int id);
 
   /**
    * Find by id cart detail dto.
