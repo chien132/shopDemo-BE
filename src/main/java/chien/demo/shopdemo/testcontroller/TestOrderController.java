@@ -50,7 +50,6 @@ public class TestOrderController {
     // Test
     OrderDto order = new OrderDto();
     order.setCustomer(customerService.findById(id));
-    //    order.setOrderDate(new Date(System.currentTimeMillis()));
     order.setOrderDate(new SimpleDateFormat("dd-MM-yyyy").parse(date));
     // end test
     OrderDto responseOrder = orderService.create(order);
