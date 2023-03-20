@@ -34,7 +34,7 @@ public interface ItemService {
    *
    * @param id the id
    */
-  void deleteById(int id);
+  boolean deleteById(int id);
 
   /**
    * Find by id item dto.
