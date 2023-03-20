@@ -1,7 +1,7 @@
 package chien.demo.shopdemo.dto;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

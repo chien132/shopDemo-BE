@@ -9,19 +9,13 @@ import org.springframework.web.context.request.WebRequest;
 /** The type Api exception handler. */
 @RestControllerAdvice
 public class ApiExceptionHandler {
-  /**
-   * Handle all exception error message.
-   *
-   * @param ex the ex
-   * @param request the request
-   * @return the error message
-   */
-  @ExceptionHandler(Exception.class)
-  @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-  public ErrorMessage handleAllException(Exception ex, WebRequest request) {
-    // quá trình kiểm soat lỗi diễn ra ở đây
-    return new ErrorMessage(10000, ex.getLocalizedMessage());
-  }
+
+  //  @ExceptionHandler(Exception.class)
+  //  @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+  //  public ErrorMessage handleAllException(Exception ex, WebRequest request) {
+  //    // quá trình kiểm soat lỗi diễn ra ở đây
+  //    return new ErrorMessage(10000, ex.getMessage());
+  //  }
 
   /**
    * Cart detail not found exception error message.
