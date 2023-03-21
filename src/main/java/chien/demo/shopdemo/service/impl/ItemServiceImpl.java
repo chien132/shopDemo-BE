@@ -43,19 +43,19 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
-  public boolean deleteById(int id) {
+  public String deleteById(int id) {
     // Item already sold
     if (itemRepository.getOrderdTime(id) > 0) {
-      return false;
+      return "unable";
     }
     Optional<Item> result = itemRepository.findById(id);
     // Item is available
     if (result.isPresent()) {
       itemRepository.deleteById(result.get().getId());
-      return true;
+      return "deleted";
     }
     // Item is not available
-    return false;
+    return "notFound";
   }
 
   @Override

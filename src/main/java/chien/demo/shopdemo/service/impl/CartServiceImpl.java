@@ -59,4 +59,14 @@ public class CartServiceImpl implements CartService {
       return null;
     }
   }
+
+  @Override
+  public CartDto findByCustomerId(int id) {
+    Cart foundCart = cartRepository.findByCustomerId(id);
+    if (foundCart != null) {
+      return CartMapper.getInstance().toDto(foundCart);
+    } else {
+      return null;
+    }
+  }
 }

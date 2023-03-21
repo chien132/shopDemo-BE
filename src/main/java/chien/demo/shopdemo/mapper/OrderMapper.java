@@ -2,6 +2,7 @@ package chien.demo.shopdemo.mapper;
 
 import chien.demo.shopdemo.dto.OrderDto;
 import chien.demo.shopdemo.model.Order;
+import java.util.stream.Collectors;
 
 /** The type Order mapper. */
 public class OrderMapper {
@@ -27,11 +28,14 @@ public class OrderMapper {
    * @return the order
    */
   public Order toEntity(OrderDto orderDto) {
-    Order order = new Order();
-    order.setId(orderDto.getId());
-    order.setOrderDate(orderDto.getOrderDate());
-    order.setCustomer(CustomerMapper.getInstance().toEntity(orderDto.getCustomer()));
-    return order;
+    return new Order()
+        .setId(orderDto.getId())
+        .setOrderDate(orderDto.getOrderDate())
+        .setCustomer(CustomerMapper.getInstance().toEntity(orderDto.getCustomer()))
+        .setOrderDetails(
+            orderDto.getOrderDetails().stream()
+                .map(orderDetailDto -> OrderDetailMapper.getInstance().toEntity(orderDetailDto))
+                .collect(Collectors.toList()));
   }
 
   /**
@@ -41,10 +45,13 @@ public class OrderMapper {
    * @return the order dto
    */
   public OrderDto toDto(Order order) {
-    OrderDto orderDto = new OrderDto();
-    orderDto.setId(order.getId());
-    orderDto.setOrderDate(order.getOrderDate());
-    orderDto.setCustomer(CustomerMapper.getInstance().toDto(order.getCustomer()));
-    return orderDto;
+    return new OrderDto()
+        .setId(order.getId())
+        .setOrderDate(order.getOrderDate())
+        .setCustomer(CustomerMapper.getInstance().toDto(order.getCustomer()))
+        .setOrderDetails(
+            order.getOrderDetails().stream()
+                .map(orderDetail -> OrderDetailMapper.getInstance().toDto(orderDetail))
+                .collect(Collectors.toList()));
   }
 }

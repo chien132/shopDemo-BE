@@ -33,9 +33,9 @@ class CartDetailRepositoryTest {
   @BeforeEach
   void setUp() {
     customer = customerRepository.save(new Customer(123, "u", "p", false));
-    cart = cartRepository.save(new Cart(123, customer));
+    cart = cartRepository.save(new Cart(123, customer, new ArrayList<>()));
     item = itemRepository.save(new Item(123, "Test", 1));
-    cartDetail = new CartDetail(123, cart, item, 1, new Date(System.currentTimeMillis()));
+    cartDetail = new CartDetail(123, cart, item, 1, new Date());
   }
 
   @AfterEach
@@ -81,7 +81,7 @@ class CartDetailRepositoryTest {
   void whenFindAll_shouldReturnList() {
     List<CartDetail> cartDetails = new ArrayList<>();
     for (int i = 0; i < 3; i++) {
-      cartDetails.add(new CartDetail(i, cart, item, 1, new Date(System.currentTimeMillis())));
+      cartDetails.add(new CartDetail(i, cart, item, 1, new Date()));
       cartDetailRepository.save(cartDetails.get(i));
     }
     List<CartDetail> foundList = cartDetailRepository.findAll();

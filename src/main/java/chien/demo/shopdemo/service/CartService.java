@@ -43,4 +43,12 @@ public interface CartService {
    * @return the cart dto
    */
   CartDto findById(int id);
+
+  /**
+   * Find cart by customer id.
+   *
+   * @param id the id
+   * @return the cart dto
+   */
+  CartDto findByCustomerId(int id);
 }

@@ -11,7 +11,9 @@ import chien.demo.shopdemo.dto.CartDto;
 import chien.demo.shopdemo.dto.CustomerDto;
 import chien.demo.shopdemo.dto.ItemDto;
 import chien.demo.shopdemo.mapper.CartDetailMapper;
+import chien.demo.shopdemo.model.Cart;
 import chien.demo.shopdemo.model.CartDetail;
+import chien.demo.shopdemo.model.Customer;
 import chien.demo.shopdemo.repository.CartDetailRepository;
 import chien.demo.shopdemo.service.impl.CartDetailServiceImpl;
 import java.util.ArrayList;
@@ -35,15 +37,18 @@ class CartDetailServiceTest {
   CartDetailDto cartDetailDto;
   CartDetail cartDetail;
   CartDto cartDto;
+  Cart cart;
   ItemDto itemDto;
 
   @BeforeEach
   void setUp() {
-    cartDto = new CartDto(1, new CustomerDto(1, "u", "p", true));
+    cartDto = new CartDto(1, new CustomerDto(1, "u", "p", true), new ArrayList<>());
     itemDto = new ItemDto(1, "Item test", 215);
-    cartDetailDto =
-        new CartDetailDto(1, cartDto, itemDto, 12, new Date(System.currentTimeMillis()));
+    cartDetailDto = new CartDetailDto(1, cartDto.getId(), itemDto, 12, new Date());
+    cartDto.getCartDetails().add(cartDetailDto);
     cartDetail = CartDetailMapper.getInstance().toEntity(cartDetailDto);
+    cart = new Cart(1, new Customer(1, "u", "p", true), new ArrayList<>());
+    cartDetail.setCart(cart);
   }
 
   @AfterEach
@@ -52,14 +57,14 @@ class CartDetailServiceTest {
     cartDetailDto = null;
     itemDto = null;
     cartDto = null;
+    cart = null;
   }
 
   @Test
   void whenFindAll_shouldReturnList() {
     List<CartDetailDto> mockCartDetails = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
-      mockCartDetails.add(
-          new CartDetailDto(i, cartDto, itemDto, i * 2, new Date(System.currentTimeMillis())));
+      mockCartDetails.add(new CartDetailDto(i, cartDto.getId(), itemDto, i * 2, new Date()));
     }
     given(cartDetailRepository.findAll())
         .willReturn(

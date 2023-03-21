@@ -37,8 +37,7 @@ class OrderServiceTest {
 
   @BeforeEach
   void setUp() {
-    orderDto =
-        new OrderDto(1, new CustomerDto(1, "u", "p", true), new Date(System.currentTimeMillis()));
+    orderDto = new OrderDto(1, new CustomerDto(1, "u", "p", true), new Date(), new ArrayList<>());
     order = OrderMapper.getInstance().toEntity(orderDto);
   }
 
@@ -52,7 +51,7 @@ class OrderServiceTest {
   void whenFindAll_shouldReturnList() {
     List<OrderDto> mockOrders = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
-      mockOrders.add(new OrderDto(i, new CustomerDto(), new Date(System.currentTimeMillis())));
+      mockOrders.add(new OrderDto(i, new CustomerDto(), new Date(), new ArrayList<>()));
     }
     given(orderRepository.findAll())
         .willReturn(
@@ -69,7 +68,7 @@ class OrderServiceTest {
     List<OrderDto> mockOrders = new ArrayList<>();
     CustomerDto customerDto = new CustomerDto(1, "Test customer", "123", true);
     for (int i = 0; i < 5; i++) {
-      mockOrders.add(new OrderDto(i, customerDto, new Date(System.currentTimeMillis())));
+      mockOrders.add(new OrderDto(i, customerDto, new Date(), new ArrayList<>()));
     }
     given(orderRepository.findAllByCustomerId(customerDto.getId()))
         .willReturn(

@@ -31,7 +31,6 @@ public class CartDetailMapper {
     cart.setId(cartDto.getId());
     cart.setItem(ItemMapper.getInstance().toEntity(cartDto.getItem()));
     cart.setQuantity(cartDto.getQuantity());
-    cart.setCart(CartMapper.getInstance().toEntity(cartDto.getCart()));
     cart.setDateAdded(cartDto.getDateAdded());
     return cart;
   }
@@ -39,16 +38,16 @@ public class CartDetailMapper {
   /**
    * To dto cart detail dto.
    *
-   * @param cart the cart
+   * @param cartDetail the cart
    * @return the cart detail dto
    */
-  public CartDetailDto toDto(CartDetail cart) {
-    CartDetailDto cartDto = new CartDetailDto();
-    cartDto.setId(cart.getId());
-    cartDto.setItem(ItemMapper.getInstance().toDto(cart.getItem()));
-    cartDto.setQuantity(cart.getQuantity());
-    cartDto.setCart(CartMapper.getInstance().toDto(cart.getCart()));
-    cartDto.setDateAdded(cart.getDateAdded());
-    return cartDto;
+  public CartDetailDto toDto(CartDetail cartDetail) {
+    CartDetailDto cartDetailDto = new CartDetailDto();
+    cartDetailDto.setId(cartDetail.getId());
+    cartDetailDto.setItem(ItemMapper.getInstance().toDto(cartDetail.getItem()));
+    cartDetailDto.setQuantity(cartDetail.getQuantity());
+    cartDetailDto.setCartId(cartDetail.getCart().getId());
+    cartDetailDto.setDateAdded(cartDetail.getDateAdded());
+    return cartDetailDto;
   }
 }

@@ -29,7 +29,6 @@ public class OrderDetailMapper {
   public OrderDetail toEntity(OrderDetailDto orderDetailDto) {
     OrderDetail orderDetail = new OrderDetail();
     orderDetail.setId(orderDetailDto.getId());
-    orderDetail.setOrder(OrderMapper.getInstance().toEntity(orderDetailDto.getOrder()));
     orderDetail.setItem(ItemMapper.getInstance().toEntity(orderDetailDto.getItem()));
     orderDetail.setQuantity(orderDetailDto.getQuantity());
     return orderDetail;
@@ -44,7 +43,7 @@ public class OrderDetailMapper {
   public OrderDetailDto toDto(OrderDetail orderDetail) {
     OrderDetailDto orderDetailDto = new OrderDetailDto();
     orderDetailDto.setId(orderDetail.getId());
-    orderDetailDto.setOrder(OrderMapper.getInstance().toDto(orderDetail.getOrder()));
+    orderDetailDto.setOrderId(orderDetail.getOrder().getId());
     orderDetailDto.setItem(ItemMapper.getInstance().toDto(orderDetail.getItem()));
     orderDetailDto.setQuantity(orderDetail.getQuantity());
     return orderDetailDto;

@@ -35,7 +35,7 @@ class CartServiceTest {
 
   @BeforeEach
   void setUp() {
-    cartDto = new CartDto(1, new CustomerDto(1, "u", "p", true));
+    cartDto = new CartDto(1, new CustomerDto(1, "u", "p", true), new ArrayList<>());
     cart = CartMapper.getInstance().toEntity(cartDto);
   }
 
@@ -50,7 +50,7 @@ class CartServiceTest {
     CustomerDto customer = new CustomerDto(1, "u", "p", true);
     List<CartDto> mockCarts = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
-      mockCarts.add(new CartDto(i, customer));
+      mockCarts.add(new CartDto(i, customer, new ArrayList<>()));
     }
     given(cartRepository.findAll())
         .willReturn(

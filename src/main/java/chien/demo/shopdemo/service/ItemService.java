@@ -34,7 +34,7 @@ public interface ItemService {
    *
    * @param id the id
    */
-  boolean deleteById(int id);
+  String deleteById(int id);
 
   /**
    * Find by id item dto.

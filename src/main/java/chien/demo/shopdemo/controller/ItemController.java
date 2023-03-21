@@ -79,12 +79,13 @@ public class ItemController {
    */
   @DeleteMapping("/{id}")
   public ResponseEntity<HttpStatus> deleteItem(@PathVariable("id") int id) {
-    boolean isDeleted = itemService.deleteById(id);
-    if (isDeleted) {
+    String result = itemService.deleteById(id);
+    if (result.equals("deleted")) {
       return ResponseEntity.ok().build();
-
-    } else {
+    } else if (result.equals("unable")) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } else {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
   }
 }

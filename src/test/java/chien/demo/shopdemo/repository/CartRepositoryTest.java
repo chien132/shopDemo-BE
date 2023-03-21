@@ -27,7 +27,7 @@ class CartRepositoryTest {
   @BeforeEach
   void setUp() {
     customer = customerRepository.save(new Customer(123, "un", "pw", true));
-    cart = new Cart(123, customer);
+    cart = new Cart(123, customer, new ArrayList<>());
   }
 
   @AfterEach
@@ -70,7 +70,7 @@ class CartRepositoryTest {
   void whenFindAll_shouldReturnList() {
     List<Cart> carts = new ArrayList<>();
     for (int i = 0; i < 3; i++) {
-      carts.add(new Cart(i, customer));
+      carts.add(new Cart(i, customer, new ArrayList<>()));
       cartRepository.save(carts.get(i));
     }
     List<Cart> foundList = cartRepository.findAll();

@@ -1,11 +1,10 @@
 package chien.demo.shopdemo.service.impl;
 
 import chien.demo.shopdemo.dto.OrderDetailDto;
-import chien.demo.shopdemo.mapper.ItemMapper;
 import chien.demo.shopdemo.mapper.OrderDetailMapper;
-import chien.demo.shopdemo.mapper.OrderMapper;
 import chien.demo.shopdemo.model.OrderDetail;
 import chien.demo.shopdemo.repository.OrderDetailRepository;
+import chien.demo.shopdemo.repository.OrderRepository;
 import chien.demo.shopdemo.service.OrderDetailService;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderDetailServiceImpl implements OrderDetailService {
 
   @Autowired private OrderDetailRepository orderDetailRepository;
+  @Autowired private OrderRepository orderRepository;
 
   @Override
   public List<OrderDetailDto> findAll() {
@@ -31,17 +31,15 @@ public class OrderDetailServiceImpl implements OrderDetailService {
   @Override
   public OrderDetailDto create(OrderDetailDto dto) {
     OrderDetail orderDetail = OrderDetailMapper.getInstance().toEntity(dto);
+    orderDetail.setOrder(orderRepository.findById(dto.getOrderId()).get());
     return OrderDetailMapper.getInstance().toDto(orderDetailRepository.save(orderDetail));
   }
 
   @Override
   public OrderDetailDto update(int id, OrderDetailDto dto) {
-    Optional<OrderDetail> result = orderDetailRepository.findById(id);
-    OrderDetail orderDetail = result.orElseGet(OrderDetail::new);
+    //    OrderDetail orderDetail = result.orElseGet(OrderDetail::new); should check for existence
+    OrderDetail orderDetail = OrderDetailMapper.getInstance().toEntity(dto);
     orderDetail.setId(id);
-    orderDetail.setOrder(OrderMapper.getInstance().toEntity(dto.getOrder()));
-    orderDetail.setItem(ItemMapper.getInstance().toEntity(dto.getItem()));
-    orderDetail.setQuantity(dto.getQuantity());
     return OrderDetailMapper.getInstance().toDto(orderDetailRepository.save(orderDetail));
   }
 

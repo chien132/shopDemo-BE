@@ -33,7 +33,7 @@ class OrderDetailRepositoryTest {
   @BeforeEach
   void setUp() {
     customer = customerRepository.save(new Customer(123, "u", "p", false));
-    order = orderRepository.save(new Order(123, customer, new Date()));
+    order = orderRepository.save(new Order(123, customer, new Date(), new ArrayList<>()));
     item = itemRepository.save(new Item(123, "Test", 1));
     orderDetail = new OrderDetail(123, order, item, 2);
   }

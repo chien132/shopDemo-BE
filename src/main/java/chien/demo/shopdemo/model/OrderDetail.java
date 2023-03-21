@@ -23,8 +23,10 @@ public class OrderDetail {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "orderId")
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "orderId", nullable = false)
+  //  @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+  //  @JsonIdentityReference(alwaysAsId = true)
   private Order order;
 
   @ManyToOne(fetch = FetchType.LAZY)

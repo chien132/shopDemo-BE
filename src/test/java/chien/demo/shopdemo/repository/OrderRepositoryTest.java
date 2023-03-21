@@ -28,7 +28,7 @@ class OrderRepositoryTest {
   @BeforeEach
   void setUp() {
     customer = customerRepository.save(new Customer(123, "u", "p", true));
-    order = new Order(123, customer, new Date());
+    order = new Order(123, customer, new Date(), new ArrayList<>());
   }
 
   @AfterEach
@@ -71,7 +71,7 @@ class OrderRepositoryTest {
   void whenFindAll_shouldReturnList() {
     List<Order> orders = new ArrayList<>();
     for (int i = 0; i < 3; i++) {
-      orders.add(new Order(i, customer, new Date()));
+      orders.add(new Order(i, customer, new Date(), new ArrayList<>()));
       orderRepository.save(orders.get(i));
     }
     List<Order> foundList = orderRepository.findAll();
@@ -82,8 +82,7 @@ class OrderRepositoryTest {
   void whenFindAllByCustomerId_shouldReturnList() {
     List<Order> orders = new ArrayList<>();
     for (int i = 0; i < 3; i++) {
-      orders.add(new Order(i, customer, new Date()));
-      orderRepository.save(orders.get(i));
+      orders.add(orderRepository.save(new Order(i, customer, new Date(), new ArrayList<>())));
     }
     List<Order> foundList = orderRepository.findAllByCustomerId(customer.getId());
     assertThat(foundList).hasSameElementsAs(orders);

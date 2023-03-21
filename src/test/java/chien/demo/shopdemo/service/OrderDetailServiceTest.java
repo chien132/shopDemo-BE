@@ -41,10 +41,9 @@ class OrderDetailServiceTest {
 
   @BeforeEach
   void setUp() {
-    order =
-        new OrderDto(1, new CustomerDto(1, "u", "p", true), new Date(System.currentTimeMillis()));
+    order = new OrderDto(1, new CustomerDto(1, "u", "p", true), new Date(), new ArrayList<>());
     item = new ItemDto(1, "Item", 123);
-    orderDetailDto = new OrderDetailDto(1, order, item, 2);
+    orderDetailDto = new OrderDetailDto(1, order.getId(), item, 2);
     orderDetail = OrderDetailMapper.getInstance().toEntity(orderDetailDto);
   }
 
@@ -60,7 +59,7 @@ class OrderDetailServiceTest {
     List<OrderDetailDto> mockList = new ArrayList<>();
 
     for (int i = 0; i < 5; i++) {
-      mockList.add(new OrderDetailDto(i, order, item, i));
+      mockList.add(new OrderDetailDto(i, order.getId(), item, i));
     }
     given(orderDetailRepository.findAll())
         .willReturn(

@@ -29,8 +29,10 @@ public class CartDetail {
   @JoinColumn(name = "cartId")
   private Cart cart;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "itemId")
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "itemId", nullable = false)
+  //  @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+  //  @JsonIdentityReference(alwaysAsId = true)
   private Item item;
 
   private int quantity;
