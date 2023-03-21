@@ -11,8 +11,10 @@ import chien.demo.shopdemo.dto.ItemDto;
 import chien.demo.shopdemo.dto.OrderDetailDto;
 import chien.demo.shopdemo.dto.OrderDto;
 import chien.demo.shopdemo.mapper.OrderDetailMapper;
+import chien.demo.shopdemo.mapper.OrderMapper;
 import chien.demo.shopdemo.model.OrderDetail;
 import chien.demo.shopdemo.repository.OrderDetailRepository;
+import chien.demo.shopdemo.repository.OrderRepository;
 import chien.demo.shopdemo.service.impl.OrderDetailServiceImpl;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,42 +32,46 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class OrderDetailServiceTest {
   @Mock OrderDetailRepository orderDetailRepository;
+  @Mock OrderRepository orderRepository;
 
   @InjectMocks OrderDetailServiceImpl orderDetailService;
 
   OrderDetailDto orderDetailDto;
-
   OrderDetail orderDetail;
-  OrderDto order;
-  ItemDto item;
+  OrderDto orderDto;
+  ItemDto itemDto;
 
   @BeforeEach
   void setUp() {
-    order = new OrderDto(1, new CustomerDto(1, "u", "p", true), new Date(), new ArrayList<>());
-    item = new ItemDto(1, "Item", 123);
-    orderDetailDto = new OrderDetailDto(1, order.getId(), item, 2);
+    orderDto = new OrderDto(1, new CustomerDto(1, "u", "p", true), new Date(), new ArrayList<>());
+    itemDto = new ItemDto(1, "Item", 123);
+    orderDetailDto = new OrderDetailDto(1, orderDto.getId(), itemDto, 2);
     orderDetail = OrderDetailMapper.getInstance().toEntity(orderDetailDto);
+    orderDetail.setOrder(OrderMapper.getInstance().toEntity(orderDto));
   }
 
   @AfterEach
   void tearDown() {
+    orderDetail = null;
     orderDetailDto = null;
-    order = null;
-    item = null;
+    orderDto = null;
+    itemDto = null;
   }
 
   @Test
   void whenFindAll_shouldReturnList() {
     List<OrderDetailDto> mockList = new ArrayList<>();
-
     for (int i = 0; i < 5; i++) {
-      mockList.add(new OrderDetailDto(i, order.getId(), item, i));
+      mockList.add(new OrderDetailDto(i, orderDto.getId(), itemDto, i));
     }
-    given(orderDetailRepository.findAll())
-        .willReturn(
-            mockList.stream()
-                .map(orderDetailDto -> OrderDetailMapper.getInstance().toEntity(orderDetailDto))
-                .collect(Collectors.toList()));
+    List<OrderDetail> expectList =
+        mockList.stream()
+            .map(orderDetailDto -> OrderDetailMapper.getInstance().toEntity(orderDetailDto))
+            .collect(Collectors.toList());
+    for (int i = 0; i < mockList.size(); i++) {
+      expectList.get(i).setOrder(orderDetail.getOrder());
+    }
+    given(orderDetailRepository.findAll()).willReturn(expectList);
     List<OrderDetailDto> actualList = orderDetailService.findAll();
     assertThat(actualList).hasSameElementsAs(mockList);
     verify(orderDetailRepository, times(1)).findAll();
@@ -73,6 +79,8 @@ class OrderDetailServiceTest {
 
   @Test
   void whenCreate_shouldReturnOrderDetail() {
+    given(orderRepository.findById(orderDetail.getOrder().getId()))
+        .willReturn(Optional.of(orderDetail.getOrder()));
     given(orderDetailRepository.save(orderDetail)).willReturn(orderDetail);
     OrderDetailDto savedOrderDetail = orderDetailService.create(orderDetailDto);
     assertThat(savedOrderDetail).isEqualTo(orderDetailDto);
@@ -81,10 +89,11 @@ class OrderDetailServiceTest {
 
   @Test
   void whenUpdate_shouldReturnOrderDetail() {
-    given(orderDetailRepository.findById(orderDetailDto.getId()))
-        .willReturn(Optional.of(orderDetail));
-    orderDetailDto.setQuantity(60);
+    given(orderRepository.findById(orderDetailDto.getOrderId()))
+        .willReturn(Optional.of(orderDetail.getOrder()));
     given(orderDetailRepository.save(orderDetail)).willReturn(orderDetail);
+    orderDetailDto.setQuantity(60);
+    orderDetail.setQuantity(orderDetailDto.getQuantity());
     OrderDetailDto updatedOrderDetail =
         orderDetailService.update(orderDetailDto.getId(), orderDetailDto);
     assertThat(updatedOrderDetail).isEqualTo(orderDetailDto);

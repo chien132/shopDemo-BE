@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/** Order controller. */
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
@@ -28,11 +29,23 @@ public class OrderController {
   @Autowired CartService cartService;
   @Autowired CartDetailService cartDetailService;
 
+  /**
+   * Gets orders by customer id.
+   *
+   * @param id the customer's id
+   * @return the orders by customer id
+   */
   @GetMapping("{id}")
   public ResponseEntity<List<OrderDto>> getOrdersByCustomerId(@PathVariable(name = "id") int id) {
     return ResponseEntity.ok(orderService.findAllByCustomerId(id));
   }
 
+  /**
+   * Create order by customer id.
+   *
+   * @param customerId the customer id
+   * @return the created order
+   */
   @PostMapping
   public ResponseEntity<OrderDto> createOrderByCustomerId(@RequestBody int customerId) {
     CartDto cartDto = cartService.findByCustomerId(customerId);

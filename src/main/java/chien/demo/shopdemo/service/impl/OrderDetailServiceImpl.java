@@ -2,6 +2,7 @@ package chien.demo.shopdemo.service.impl;
 
 import chien.demo.shopdemo.dto.OrderDetailDto;
 import chien.demo.shopdemo.mapper.OrderDetailMapper;
+import chien.demo.shopdemo.model.Order;
 import chien.demo.shopdemo.model.OrderDetail;
 import chien.demo.shopdemo.repository.OrderDetailRepository;
 import chien.demo.shopdemo.repository.OrderRepository;
@@ -31,7 +32,10 @@ public class OrderDetailServiceImpl implements OrderDetailService {
   @Override
   public OrderDetailDto create(OrderDetailDto dto) {
     OrderDetail orderDetail = OrderDetailMapper.getInstance().toEntity(dto);
-    orderDetail.setOrder(orderRepository.findById(dto.getOrderId()).get());
+    Optional<Order> order = orderRepository.findById(dto.getOrderId());
+    if (order.isPresent()) {
+      orderDetail.setOrder(order.get());
+    }
     return OrderDetailMapper.getInstance().toDto(orderDetailRepository.save(orderDetail));
   }
 
@@ -39,6 +43,10 @@ public class OrderDetailServiceImpl implements OrderDetailService {
   public OrderDetailDto update(int id, OrderDetailDto dto) {
     //    OrderDetail orderDetail = result.orElseGet(OrderDetail::new); should check for existence
     OrderDetail orderDetail = OrderDetailMapper.getInstance().toEntity(dto);
+    Optional<Order> order = orderRepository.findById(dto.getOrderId());
+    if (order.isPresent()) {
+      orderDetail.setOrder(order.get());
+    }
     orderDetail.setId(id);
     return OrderDetailMapper.getInstance().toDto(orderDetailRepository.save(orderDetail));
   }

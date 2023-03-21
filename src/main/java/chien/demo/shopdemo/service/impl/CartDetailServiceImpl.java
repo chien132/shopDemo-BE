@@ -2,6 +2,7 @@ package chien.demo.shopdemo.service.impl;
 
 import chien.demo.shopdemo.dto.CartDetailDto;
 import chien.demo.shopdemo.mapper.CartDetailMapper;
+import chien.demo.shopdemo.model.Cart;
 import chien.demo.shopdemo.model.CartDetail;
 import chien.demo.shopdemo.repository.CartDetailRepository;
 import chien.demo.shopdemo.repository.CartRepository;
@@ -31,7 +32,10 @@ public class CartDetailServiceImpl implements CartDetailService {
   @Override
   public CartDetailDto create(CartDetailDto dto) {
     CartDetail cartDetail = CartDetailMapper.getInstance().toEntity(dto);
-    cartDetail.setCart(cartRepository.findById(dto.getCartId()).get());
+    Optional<Cart> cart = cartRepository.findById(dto.getCartId());
+    if (cart.isPresent()) {
+      cartDetail.setCart(cart.get());
+    }
     return CartDetailMapper.getInstance().toDto(cartDetailRepository.save(cartDetail));
   }
 
@@ -39,7 +43,10 @@ public class CartDetailServiceImpl implements CartDetailService {
   public CartDetailDto update(int id, CartDetailDto dto) {
     //    CartDetail cartDetail = result.orElseGet(CartDetail::new);  should check for existence
     CartDetail cartDetail = CartDetailMapper.getInstance().toEntity(dto);
-    cartDetail.setCart(cartRepository.findById(dto.getCartId()).get());
+    Optional<Cart> cart = cartRepository.findById(dto.getCartId());
+    if (cart.isPresent()) {
+      cartDetail.setCart(cart.get());
+    }
     cartDetail.setId(id);
     return CartDetailMapper.getInstance().toDto(cartDetailRepository.save(cartDetail));
   }

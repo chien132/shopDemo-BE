@@ -11,10 +11,10 @@ import chien.demo.shopdemo.dto.CartDto;
 import chien.demo.shopdemo.dto.CustomerDto;
 import chien.demo.shopdemo.dto.ItemDto;
 import chien.demo.shopdemo.mapper.CartDetailMapper;
-import chien.demo.shopdemo.model.Cart;
+import chien.demo.shopdemo.mapper.CartMapper;
 import chien.demo.shopdemo.model.CartDetail;
-import chien.demo.shopdemo.model.Customer;
 import chien.demo.shopdemo.repository.CartDetailRepository;
+import chien.demo.shopdemo.repository.CartRepository;
 import chien.demo.shopdemo.service.impl.CartDetailServiceImpl;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,12 +32,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class CartDetailServiceTest {
   @Mock CartDetailRepository cartDetailRepository;
+  @Mock CartRepository cartRepository;
   @InjectMocks CartDetailServiceImpl cartDetailService;
 
   CartDetailDto cartDetailDto;
   CartDetail cartDetail;
   CartDto cartDto;
-  Cart cart;
   ItemDto itemDto;
 
   @BeforeEach
@@ -45,10 +45,8 @@ class CartDetailServiceTest {
     cartDto = new CartDto(1, new CustomerDto(1, "u", "p", true), new ArrayList<>());
     itemDto = new ItemDto(1, "Item test", 215);
     cartDetailDto = new CartDetailDto(1, cartDto.getId(), itemDto, 12, new Date());
-    cartDto.getCartDetails().add(cartDetailDto);
     cartDetail = CartDetailMapper.getInstance().toEntity(cartDetailDto);
-    cart = new Cart(1, new Customer(1, "u", "p", true), new ArrayList<>());
-    cartDetail.setCart(cart);
+    cartDetail.setCart(CartMapper.getInstance().toEntity(cartDto));
   }
 
   @AfterEach
@@ -57,7 +55,6 @@ class CartDetailServiceTest {
     cartDetailDto = null;
     itemDto = null;
     cartDto = null;
-    cart = null;
   }
 
   @Test
@@ -66,11 +63,14 @@ class CartDetailServiceTest {
     for (int i = 0; i < 5; i++) {
       mockCartDetails.add(new CartDetailDto(i, cartDto.getId(), itemDto, i * 2, new Date()));
     }
-    given(cartDetailRepository.findAll())
-        .willReturn(
-            mockCartDetails.stream()
-                .map(cd -> CartDetailMapper.getInstance().toEntity(cd))
-                .collect(Collectors.toList()));
+    List<CartDetail> expectCartDetails =
+        mockCartDetails.stream()
+            .map(cd -> CartDetailMapper.getInstance().toEntity(cd))
+            .collect(Collectors.toList());
+    for (CartDetail cartDetail1 : expectCartDetails) {
+      cartDetail1.setCart(cartDetail.getCart());
+    }
+    given(cartDetailRepository.findAll()).willReturn(expectCartDetails);
     List<CartDetailDto> actualCartDetails = cartDetailService.findAll();
     assertThat(actualCartDetails).hasSameElementsAs(mockCartDetails);
     verify(cartDetailRepository).findAll();
@@ -79,6 +79,8 @@ class CartDetailServiceTest {
   @Test
   void whenCreate_shouldReturnCartDetail() {
     given(cartDetailRepository.save(cartDetail)).willReturn(cartDetail);
+    given(cartRepository.findById(cartDetail.getCart().getId()))
+        .willReturn(Optional.of(cartDetail.getCart()));
     CartDetailDto savedCartDetail = cartDetailService.create(cartDetailDto);
     assertThat(savedCartDetail).isEqualTo(cartDetailDto);
     verify(cartDetailRepository, times(1)).save(cartDetail);
@@ -86,9 +88,12 @@ class CartDetailServiceTest {
 
   @Test
   void whenUpdate_shouldReturnCartDetail() {
-    given(cartDetailRepository.findById(cartDetail.getId())).willReturn(Optional.of(cartDetail));
+    given(cartRepository.findById(cartDetail.getCart().getId()))
+        .willReturn(Optional.of(cartDetail.getCart()));
+    // given(cartDetailRepository.findById(cartDetail.getId())).willReturn(Optional.of(cartDetail));
     given(cartDetailRepository.save(cartDetail)).willReturn(cartDetail);
     cartDetailDto.setQuantity(1212);
+    cartDetail.setQuantity(cartDetailDto.getQuantity());
     CartDetailDto updatedCartDetail =
         cartDetailService.update(cartDetailDto.getId(), cartDetailDto);
     assertThat(updatedCartDetail).isEqualTo(cartDetailDto);

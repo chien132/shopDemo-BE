@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/** Cart controller. */
 @RestController
 @RequestMapping("/api/carts")
 public class CartController {
@@ -32,6 +33,12 @@ public class CartController {
   @Autowired private ItemService itemService;
   @Autowired private CartDetailService cartDetailService;
 
+  /**
+   * Gets customer's cart by customer id.
+   *
+   * @param id customer id
+   * @return the customer's cart
+   */
   @GetMapping("/{id}")
   public ResponseEntity<CartDto> getCustomersCart(@PathVariable("id") int id) {
     CartDto foundCart = cartService.findByCustomerId(id);
@@ -42,6 +49,13 @@ public class CartController {
     }
   }
 
+  /**
+   * Add item to cart.
+   *
+   * @param values the values map {itemId, customerId, quantity}
+   * @return the Cart of customer with specified id
+   * @throws CustomerNotFoundException if customer is not found
+   */
   @PostMapping
   public ResponseEntity<CartDto> addItem(@RequestBody Map<String, String> values)
       throws CustomerNotFoundException {
@@ -56,7 +70,7 @@ public class CartController {
     for (CartDetailDto c : foundCart.getCartDetails()) {
       if (c.getItem().getId() == item.getId()) {
         c.setQuantity(c.getQuantity() + quantity);
-        CartDetailDto saved = cartDetailService.update(c.getId(), c);
+        cartDetailService.update(c.getId(), c);
         return ResponseEntity.ok(cartService.findByCustomerId(customerid));
       }
     }
@@ -65,6 +79,12 @@ public class CartController {
     return ResponseEntity.ok(foundCart);
   }
 
+  /**
+   * Update item.
+   *
+   * @param values the values map {cartDetailId, quantity}
+   * @return status
+   */
   @PutMapping
   public ResponseEntity<HttpStatus> updateItem(@RequestBody Map<String, String> values) {
     int quantity = Integer.parseInt(values.get("quantity"));
@@ -75,6 +95,12 @@ public class CartController {
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
+  /**
+   * Delete item.
+   *
+   * @param id cart detail id
+   * @return status
+   */
   @DeleteMapping("{id}")
   public ResponseEntity<HttpStatus> deleteItem(@PathVariable("id") int id) {
     cartDetailService.deleteById(id);
