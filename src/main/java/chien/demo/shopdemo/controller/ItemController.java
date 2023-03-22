@@ -19,13 +19,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/items")
 public class ItemController {
-  @Autowired private ItemService itemService;
+  private final ItemService itemService;
 
+  @Autowired
+  public ItemController(ItemService itemService) {
+    this.itemService = itemService;
+  }
   /**
    * Gets all items.
    *
    * @return all items
    */
+
   @GetMapping
   public ResponseEntity<List<ItemDto>> getAllItems() {
     return ResponseEntity.ok(itemService.findAll());

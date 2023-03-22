@@ -24,10 +24,30 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
-  @Autowired OrderService orderService;
-  @Autowired OrderDetailService orderDetailService;
-  @Autowired CartService cartService;
-  @Autowired CartDetailService cartDetailService;
+  private final OrderService orderService;
+  private final OrderDetailService orderDetailService;
+  private final CartService cartService;
+  private final CartDetailService cartDetailService;
+
+  /**
+   * Instantiates a new Order controller.
+   *
+   * @param orderService the order service
+   * @param orderDetailService the order detail service
+   * @param cartService the cart service
+   * @param cartDetailService the cart detail service
+   */
+  @Autowired
+  public OrderController(
+      OrderService orderService,
+      OrderDetailService orderDetailService,
+      CartService cartService,
+      CartDetailService cartDetailService) {
+    this.orderService = orderService;
+    this.orderDetailService = orderDetailService;
+    this.cartService = cartService;
+    this.cartDetailService = cartDetailService;
+  }
 
   /**
    * Gets orders by customer id.

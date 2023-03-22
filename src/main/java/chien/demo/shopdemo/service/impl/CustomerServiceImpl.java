@@ -19,6 +19,11 @@ public class CustomerServiceImpl implements CustomerService {
   @Autowired private CustomerRepository customerRepository;
 
   @Override
+  public boolean existsByUsername(String username) {
+    return customerRepository.existsByUsername(username);
+  }
+
+  @Override
   public List<CustomerDto> findAll() {
     return customerRepository.findAll().stream()
         .map(customer -> CustomerMapper.getInstance().toDto(customer))

@@ -6,6 +6,9 @@ import java.util.List;
 
 /** The interface Customer service. */
 public interface CustomerService {
+
+  boolean existsByUsername(String username);
+
   /**
    * Find all list.
    *

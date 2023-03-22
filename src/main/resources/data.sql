@@ -1,4 +1,8 @@
 insert into customers(username, password, type)
+values ('admin', '$2a$10$2u0cGZb2Wx0bdOOggcZTaepe907zbjNip8OmpA/NrHcbLmmdKdbzC', 0);
+insert into customers(username, password, type)
+values ('customer1', '$2a$10$ctdvpbWa/OfSBv8.63Blr.qoLrRc1aaKbnVCNPTB2LVQBe7GIFWye', 1);
+insert into customers(username, password, type)
 values ('Soumitra', 'soumitra@email.com', 1);
 insert into customers(username, password, type)
 values ('Liton', 'liton@email.com', 1);

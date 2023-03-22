@@ -28,17 +28,37 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/carts")
 public class CartController {
-  @Autowired private CartService cartService;
-  @Autowired private CustomerService customerService;
-  @Autowired private ItemService itemService;
-  @Autowired private CartDetailService cartDetailService;
+  private final CartService cartService;
+  private final CustomerService customerService;
+  private final ItemService itemService;
+  private final CartDetailService cartDetailService;
 
+  /**
+   * Instantiates a new Cart controller.
+   *
+   * @param cartService the cart service
+   * @param customerService the customer service
+   * @param itemService the item service
+   * @param cartDetailService the cart detail service
+   */
+  @Autowired
+  public CartController(
+      CartService cartService,
+      CustomerService customerService,
+      ItemService itemService,
+      CartDetailService cartDetailService) {
+    this.cartService = cartService;
+    this.customerService = customerService;
+    this.itemService = itemService;
+    this.cartDetailService = cartDetailService;
+  }
   /**
    * Gets customer's cart by customer id.
    *
    * @param id customer id
    * @return the customer's cart
    */
+
   @GetMapping("/{id}")
   public ResponseEntity<CartDto> getCustomersCart(@PathVariable("id") int id) {
     CartDto foundCart = cartService.findByCustomerId(id);

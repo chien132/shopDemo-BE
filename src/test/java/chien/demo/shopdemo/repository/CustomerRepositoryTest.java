@@ -65,7 +65,7 @@ class CustomerRepositoryTest {
   @Test
   void whenFindByUsername_shouldReturnCustomer() {
     Customer savedCustomer = customerRepository.save(customer);
-    Customer foundCustomer = customerRepository.findByUsername(savedCustomer.getUsername());
+    Customer foundCustomer = customerRepository.findByUsername(savedCustomer.getUsername()).get();
     assertThat(foundCustomer).isNotNull().isEqualTo(savedCustomer);
   }
 
