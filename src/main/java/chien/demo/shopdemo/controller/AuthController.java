@@ -8,7 +8,9 @@ import chien.demo.shopdemo.payload.response.MessageResponse;
 import chien.demo.shopdemo.security.jwt.JwtUtils;
 import chien.demo.shopdemo.security.services.UserDetailsImpl;
 import chien.demo.shopdemo.service.CustomerService;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,9 +70,11 @@ public class AuthController {
                 loginRequest.getUsername(), loginRequest.getPassword()));
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
-    String jwt = jwtUtils.generateJwtToken(authentication);
-
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+    Map<String, Object> claims = new HashMap<>();
+    claims.put("id", userDetails.getId());
+    claims.put("username", userDetails.getUsername());
+    String jwt = jwtUtils.generateJwtToken(authentication, claims);
     List<String> roles =
         userDetails.getAuthorities().stream()
             .map(item -> item.getAuthority())
