@@ -1,6 +1,5 @@
 package chien.demo.shopdemo.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,7 +42,6 @@ public class CartDetail {
 
   @Temporal(TemporalType.DATE)
   @DateTimeFormat(pattern = "yyyy-MM-dd")
-  @JsonFormat(pattern="yyyy-MM-dd")
   @Column(name = "dateAdded")
   private Date dateAdded;
 }
