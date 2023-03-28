@@ -60,12 +60,16 @@ public class CartController {
    */
 
   @GetMapping("/{id}")
-  public ResponseEntity<CartDto> getCustomersCart(@PathVariable("id") int id) {
+  public ResponseEntity<CartDto> getCustomersCart(@PathVariable("id") int id)
+      throws CustomerNotFoundException {
     CartDto foundCart = cartService.findByCustomerId(id);
     if (foundCart != null) {
       return ResponseEntity.ok().body(foundCart);
     } else {
-      return ResponseEntity.notFound().build();
+      CustomerDto customer = customerService.findById(id);
+      CartDto cartDto = new CartDto().setCustomer(customer);
+      CartDto createdCart = cartService.create(cartDto);
+      return ResponseEntity.ok(createdCart);
     }
   }
 
@@ -89,6 +93,11 @@ public class CartController {
     }
     for (CartDetailDto c : foundCart.getCartDetails()) {
       if (c.getItem().getId() == item.getId()) {
+        if ((c.getQuantity() + quantity) < 1) {
+          deleteItem(c.getId());
+          foundCart.getCartDetails().remove(c);
+          return ResponseEntity.ok(foundCart);
+        }
         c.setQuantity(c.getQuantity() + quantity);
         cartDetailService.update(c.getId(), c);
         return ResponseEntity.ok(cartService.findByCustomerId(customerid));

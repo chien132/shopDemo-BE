@@ -2,6 +2,7 @@ package chien.demo.shopdemo.mapper;
 
 import chien.demo.shopdemo.dto.CartDto;
 import chien.demo.shopdemo.model.Cart;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 /** The type Cart mapper. */
@@ -33,9 +34,11 @@ public class CartMapper {
         .setId(cartDto.getId())
         .setCustomer(CustomerMapper.getInstance().toEntity(cartDto.getCustomer()))
         .setCartDetails(
-            cartDto.getCartDetails().stream()
-                .map(cartDetailDto -> CartDetailMapper.getInstance().toEntity(cartDetailDto))
-                .collect(Collectors.toList()));
+            cartDto.getCartDetails() == null
+                ? Collections.emptyList()
+                : cartDto.getCartDetails().stream()
+                    .map(cartDetailDto -> CartDetailMapper.getInstance().toEntity(cartDetailDto))
+                    .collect(Collectors.toList()));
   }
 
   /**
@@ -49,8 +52,10 @@ public class CartMapper {
         .setId(cart.getId())
         .setCustomer(CustomerMapper.getInstance().toDto(cart.getCustomer()))
         .setCartDetails(
-            cart.getCartDetails().stream()
-                .map(cartDetail -> CartDetailMapper.getInstance().toDto(cartDetail))
-                .collect(Collectors.toList()));
+            cart.getCartDetails() == null
+                ? Collections.emptyList()
+                : cart.getCartDetails().stream()
+                    .map(cartDetail -> CartDetailMapper.getInstance().toDto(cartDetail))
+                    .collect(Collectors.toList()));
   }
 }

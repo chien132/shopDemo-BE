@@ -2,6 +2,7 @@ package chien.demo.shopdemo.mapper;
 
 import chien.demo.shopdemo.dto.OrderDto;
 import chien.demo.shopdemo.model.Order;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 /** The type Order mapper. */
@@ -33,9 +34,11 @@ public class OrderMapper {
         .setOrderDate(orderDto.getOrderDate())
         .setCustomer(CustomerMapper.getInstance().toEntity(orderDto.getCustomer()))
         .setOrderDetails(
-            orderDto.getOrderDetails().stream()
-                .map(orderDetailDto -> OrderDetailMapper.getInstance().toEntity(orderDetailDto))
-                .collect(Collectors.toList()));
+            orderDto.getOrderDetails() == null
+                ? Collections.emptyList()
+                : orderDto.getOrderDetails().stream()
+                    .map(orderDetailDto -> OrderDetailMapper.getInstance().toEntity(orderDetailDto))
+                    .collect(Collectors.toList()));
   }
 
   /**
@@ -50,8 +53,10 @@ public class OrderMapper {
         .setOrderDate(order.getOrderDate())
         .setCustomer(CustomerMapper.getInstance().toDto(order.getCustomer()))
         .setOrderDetails(
-            order.getOrderDetails().stream()
-                .map(orderDetail -> OrderDetailMapper.getInstance().toDto(orderDetail))
-                .collect(Collectors.toList()));
+            order.getOrderDetails() == null
+                ? Collections.emptyList()
+                : order.getOrderDetails().stream()
+                    .map(orderDetail -> OrderDetailMapper.getInstance().toDto(orderDetail))
+                    .collect(Collectors.toList()));
   }
 }

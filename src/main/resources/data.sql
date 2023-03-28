@@ -3,13 +3,13 @@ values ('admin', '$2a$10$2u0cGZb2Wx0bdOOggcZTaepe907zbjNip8OmpA/NrHcbLmmdKdbzC',
 insert into customers(username, password, type)
 values ('customer1', '$2a$10$ctdvpbWa/OfSBv8.63Blr.qoLrRc1aaKbnVCNPTB2LVQBe7GIFWye', 1);
 insert into customers(username, password, type)
-values ('Soumitra', 'soumitra@email.com', 1);
+values ('customer2', '$2a$10$ctdvpbWa/OfSBv8.63Blr.qoLrRc1aaKbnVCNPTB2LVQBe7GIFWye', 1);
 insert into customers(username, password, type)
-values ('Liton', 'liton@email.com', 1);
+values ('customer3', '$2a$10$ctdvpbWa/OfSBv8.63Blr.qoLrRc1aaKbnVCNPTB2LVQBe7GIFWye', 1);
 insert into customers(username, password, type)
-values ('Suman', 'suman@email.com', 1);
+values ('chien', '$2a$10$ctdvpbWa/OfSBv8.63Blr.qoLrRc1aaKbnVCNPTB2LVQBe7GIFWye', 1);
 insert into customers(username, password, type)
-values ('Debabrata', 'debabrata@email.com', 1);
+values ('chien132', '$2a$10$ctdvpbWa/OfSBv8.63Blr.qoLrRc1aaKbnVCNPTB2LVQBe7GIFWye', 1);
 
 insert into items(name, price)
 values ('Logitech LM115G', 145000);
@@ -39,6 +39,12 @@ insert into orderDetails(orderId, itemId, quantity)
 values (3, 1, 1);
 
 insert into carts(customerId)
+values (2);
+insert into carts(customerId)
 values (1);
 insert into cartDetails(cartId, itemId, quantity, dateAdded)
 values (1, 3, 1, '2023-03-15');
+insert into cartDetails(cartId, itemId, quantity, dateAdded)
+values (1, 1, 2, '2023-03-17');
+insert into cartDetails(cartId, itemId, quantity, dateAdded)
+values (1, 2, 1, '2023-03-23');

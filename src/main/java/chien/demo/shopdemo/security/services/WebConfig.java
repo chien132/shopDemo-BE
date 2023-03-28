@@ -12,6 +12,10 @@ public class WebConfig implements WebMvcConfigurer {
 
   @Override
   public void addCorsMappings(CorsRegistry corsRegistry) {
-    corsRegistry.addMapping("/**").allowedOrigins("http://localhost:4200").maxAge(3600L);
+    corsRegistry
+        .addMapping("/**")
+        .allowedOrigins("http://localhost:4200")
+        .maxAge(3600L)
+        .allowedMethods("*");
   }
 }
