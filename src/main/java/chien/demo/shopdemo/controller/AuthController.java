@@ -1,15 +1,12 @@
 package chien.demo.shopdemo.controller;
 
 import chien.demo.shopdemo.dto.CustomerDto;
-import chien.demo.shopdemo.payload.request.LoginRequest;
 import chien.demo.shopdemo.payload.request.SignupRequest;
-import chien.demo.shopdemo.payload.response.JwtResponse;
-import chien.demo.shopdemo.payload.response.MessageResponse;
 import chien.demo.shopdemo.security.jwt.JwtUtils;
 import chien.demo.shopdemo.security.services.UserDetailsImpl;
 import chien.demo.shopdemo.service.CustomerService;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
@@ -61,27 +58,27 @@ public class AuthController {
    */
 
   @PostMapping("/login")
-  public ResponseEntity<JwtResponse> authenticateUser(
-      @Valid @RequestBody LoginRequest loginRequest) {
+  public ResponseEntity<Map<String, String>> authenticateUser(
+      @Valid @RequestBody Map<String, String> loginRequest) {
 
     Authentication authentication =
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
-                loginRequest.getUsername(), loginRequest.getPassword()));
+                loginRequest.get("username"), loginRequest.get("password")));
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-    Map<String, Object> claims = new HashMap<>();
-    claims.put("id", userDetails.getId());
-    claims.put("username", userDetails.getUsername());
-    String jwt = jwtUtils.generateJwtToken(authentication, claims);
-    List<String> roles =
+
+    String role =
         userDetails.getAuthorities().stream()
             .map(item -> item.getAuthority())
-            .collect(Collectors.toList());
-
-    return ResponseEntity.ok(
-        new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles));
+            .collect(Collectors.toList())
+            .get(0);
+    Map<String, Object> claims = new HashMap<>();
+    claims.put("id", userDetails.getId());
+    claims.put("role", role);
+    String jwt = jwtUtils.generateJwtToken(authentication, claims);
+    return ResponseEntity.ok(Collections.singletonMap("token", jwt));
   }
 
   /**
@@ -91,11 +88,11 @@ public class AuthController {
    * @return the response entity
    */
   @PostMapping("/signup")
-  public ResponseEntity<MessageResponse> registerUser(
+  public ResponseEntity<Map<String, String>> registerUser(
       @Valid @RequestBody SignupRequest signUpRequest) {
     if (customerService.existsByUsername(signUpRequest.getUsername())) {
       return ResponseEntity.badRequest()
-          .body(new MessageResponse("Error: Username is already taken!"));
+          .body(Collections.singletonMap("message", "Username is already taken!"));
     }
 
     // Create new user's account
@@ -107,6 +104,6 @@ public class AuthController {
             signUpRequest.isRole());
 
     customerService.create(customerDto);
-    return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    return ResponseEntity.ok(Collections.singletonMap("message", "User registered successfully!"));
   }
 }
