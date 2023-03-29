@@ -4,12 +4,13 @@ import chien.demo.shopdemo.dto.CartDetailDto;
 import chien.demo.shopdemo.dto.CartDto;
 import chien.demo.shopdemo.dto.OrderDetailDto;
 import chien.demo.shopdemo.dto.OrderDto;
+import chien.demo.shopdemo.exception.EmptyCartException;
 import chien.demo.shopdemo.service.CartDetailService;
 import chien.demo.shopdemo.service.CartService;
 import chien.demo.shopdemo.service.OrderDetailService;
 import chien.demo.shopdemo.service.OrderService;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -67,15 +68,16 @@ public class OrderController {
    * @return the created order
    */
   @PostMapping
-  public ResponseEntity<OrderDto> createOrderByCustomerId(@RequestBody int customerId) {
+  public ResponseEntity<OrderDto> createOrderByCustomerId(@RequestBody int customerId)
+      throws EmptyCartException {
     CartDto cartDto = cartService.findByCustomerId(customerId);
     if (cartDto == null) {
       return ResponseEntity.notFound().build();
     }
     if (cartDto.getCartDetails().isEmpty()) {
-      return ResponseEntity.notFound().build();
+      throw new EmptyCartException();
     }
-    OrderDto orderDto = new OrderDto(0, cartDto.getCustomer(), new Date(), new ArrayList<>());
+    OrderDto orderDto = new OrderDto(0, cartDto.getCustomer(), LocalDate.now(), new ArrayList<>());
     OrderDto savedOrder = orderService.create(orderDto);
     for (CartDetailDto cartDetailDto : cartDto.getCartDetails()) {
       OrderDetailDto orderDetailDto =

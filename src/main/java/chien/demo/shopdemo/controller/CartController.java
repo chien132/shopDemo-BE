@@ -9,8 +9,8 @@ import chien.demo.shopdemo.service.CartDetailService;
 import chien.demo.shopdemo.service.CartService;
 import chien.demo.shopdemo.service.CustomerService;
 import chien.demo.shopdemo.service.ItemService;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -103,7 +103,8 @@ public class CartController {
         return ResponseEntity.ok(cartService.findByCustomerId(customerid));
       }
     }
-    CartDetailDto cartDetail = new CartDetailDto(0, foundCart.getId(), item, quantity, new Date());
+    CartDetailDto cartDetail =
+        new CartDetailDto(0, foundCart.getId(), item, quantity, LocalDate.now());
     foundCart.getCartDetails().add(cartDetailService.create(cartDetail));
     return ResponseEntity.ok(foundCart);
   }

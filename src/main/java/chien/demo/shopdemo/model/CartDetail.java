@@ -1,7 +1,6 @@
 package chien.demo.shopdemo.model;
 
-import java.util.Date;
-import javax.persistence.Column;
+import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -10,12 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 /** CartDetail Entity. */
 @Data
@@ -34,14 +30,9 @@ public class CartDetail {
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "itemId", nullable = false)
-  //  @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-  //  @JsonIdentityReference(alwaysAsId = true)
   private Item item;
 
   private int quantity;
 
-  @Temporal(TemporalType.DATE)
-  @DateTimeFormat(pattern = "yyyy-MM-dd")
-  @Column(name = "dateAdded")
-  private Date dateAdded;
+  private LocalDate dateAdded;
 }
