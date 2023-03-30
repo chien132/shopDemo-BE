@@ -75,7 +75,7 @@ public class ApiExceptionHandler {
    */
   @ExceptionHandler(ItemNotFoundException.class)
   @ResponseStatus(value = HttpStatus.NOT_FOUND)
-  public ErrorMessage itemNotFoundException(ItemCascadeDeleteError ex, WebRequest request) {
+  public ErrorMessage itemNotFoundException(ItemNotFoundException ex, WebRequest request) {
     return new ErrorMessage(404, "Cannot find the specified Item with the provided Item Id");
   }
 

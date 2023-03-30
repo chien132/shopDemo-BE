@@ -1,7 +1,7 @@
 package chien.demo.shopdemo.controller;
 
 import chien.demo.shopdemo.dto.ItemDto;
-import chien.demo.shopdemo.service.ItemService;
+import chien.demo.shopdemo.exception.ItemCascadeDeleteError;import chien.demo.shopdemo.exception.ItemNotFoundException;import chien.demo.shopdemo.service.ItemService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -83,12 +83,10 @@ public class ItemController {
    * @return the response entity
    */
   @DeleteMapping("/{id}")
-  public ResponseEntity<HttpStatus> deleteItem(@PathVariable("id") int id) {
+  public ResponseEntity<HttpStatus> deleteItem(@PathVariable("id") int id)throws ItemCascadeDeleteError, ItemNotFoundException {
     String result = itemService.deleteById(id);
     if (result.equals("deleted")) {
       return ResponseEntity.ok().build();
-    } else if (result.equals("unable")) {
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } else {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

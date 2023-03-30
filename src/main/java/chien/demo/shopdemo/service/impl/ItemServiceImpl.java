@@ -1,7 +1,7 @@
 package chien.demo.shopdemo.service.impl;
 
 import chien.demo.shopdemo.dto.ItemDto;
-import chien.demo.shopdemo.mapper.ItemMapper;
+import chien.demo.shopdemo.exception.ItemCascadeDeleteError;import chien.demo.shopdemo.exception.ItemNotFoundException;import chien.demo.shopdemo.mapper.ItemMapper;
 import chien.demo.shopdemo.model.Item;
 import chien.demo.shopdemo.repository.ItemRepository;
 import chien.demo.shopdemo.service.ItemService;
@@ -43,10 +43,10 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
-  public String deleteById(int id) {
+  public String deleteById(int id)throws ItemCascadeDeleteError, ItemNotFoundException {
     // Item already sold
     if (itemRepository.getOrderdTime(id) > 0) {
-      return "unable";
+      throw new ItemCascadeDeleteError();
     }
     Optional<Item> result = itemRepository.findById(id);
     // Item is available
@@ -55,7 +55,7 @@ public class ItemServiceImpl implements ItemService {
       return "deleted";
     }
     // Item is not available
-    return "notFound";
+    throw new ItemNotFoundException();
   }
 
   @Override
