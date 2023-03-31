@@ -47,6 +47,7 @@ public class OrderServiceImpl implements OrderService {
     order.setId(id);
     order.setCustomer(CustomerMapper.getInstance().toEntity(dto.getCustomer()));
     order.setOrderDate(dto.getOrderDate());
+    order.setCompleted(dto.isCompleted());
     return OrderMapper.getInstance().toDto(orderRepository.save(order));
   }
 
@@ -61,6 +62,16 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public OrderDto findById(int id) {
     Optional<Order> result = orderRepository.findById(id);
+    if (result.isPresent()) {
+      return OrderMapper.getInstance().toDto(result.get());
+    } else {
+      return null;
+    }
+  }
+
+  @Override
+  public OrderDto findLatestByCustomerId(int customerId) {
+    Optional<Order> result = orderRepository.findLatestByCustomerId(customerId);
     if (result.isPresent()) {
       return OrderMapper.getInstance().toDto(result.get());
     } else {

@@ -36,4 +36,6 @@ public class Order {
 
   @OneToMany(mappedBy = "order")
   private List<OrderDetail> orderDetails;
+
+  private boolean completed;
 }

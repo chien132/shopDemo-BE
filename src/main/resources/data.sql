@@ -18,12 +18,12 @@ values ('Haylo GT1 Pro', 320000);
 insert into items(name, price)
 values ('RTX 4090', 52000000);
 
-insert into orders(customerId, orderDate)
-values (1, '2023-03-18');
-insert into orders(customerId, orderDate)
-values (2, '2023-03-15');
-insert into orders(customerId, orderDate)
-values (2, '2023-03-12');
+insert into orders(customerId, orderDate, completed)
+values (1, '2023-03-18', false);
+insert into orders(customerId, orderDate, completed)
+values (2, '2023-03-15', false);
+insert into orders(customerId, orderDate, completed)
+values (2, '2023-03-12', false);
 
 insert into orderDetails(orderId, itemId, quantity)
 values (1, 1, 2);

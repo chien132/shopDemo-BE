@@ -1,7 +1,9 @@
 package chien.demo.shopdemo.service.impl;
 
 import chien.demo.shopdemo.dto.ItemDto;
-import chien.demo.shopdemo.exception.ItemCascadeDeleteError;import chien.demo.shopdemo.exception.ItemNotFoundException;import chien.demo.shopdemo.mapper.ItemMapper;
+import chien.demo.shopdemo.exception.ItemCascadeDeleteError;
+import chien.demo.shopdemo.exception.ItemNotFoundException;
+import chien.demo.shopdemo.mapper.ItemMapper;
 import chien.demo.shopdemo.model.Item;
 import chien.demo.shopdemo.repository.ItemRepository;
 import chien.demo.shopdemo.service.ItemService;
@@ -33,17 +35,21 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
-  public ItemDto update(int id, ItemDto dto) {
+  public ItemDto update(int id, ItemDto dto) throws ItemNotFoundException {
     Optional<Item> result = itemRepository.findById(id);
-    Item item = result.orElseGet(Item::new);
-    item.setId(id);
-    item.setName(dto.getName());
-    item.setPrice(dto.getPrice());
-    return ItemMapper.getInstance().toDto(itemRepository.save(item));
+    if (result.isPresent()) {
+      Item item = result.get();
+      item.setId(id);
+      item.setName(dto.getName());
+      item.setPrice(dto.getPrice());
+      return ItemMapper.getInstance().toDto(itemRepository.save(item));
+    } else {
+      throw new ItemNotFoundException();
+    }
   }
 
   @Override
-  public String deleteById(int id)throws ItemCascadeDeleteError, ItemNotFoundException {
+  public String deleteById(int id) throws ItemCascadeDeleteError, ItemNotFoundException {
     // Item already sold
     if (itemRepository.getOrderdTime(id) > 0) {
       throw new ItemCascadeDeleteError();

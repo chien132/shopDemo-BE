@@ -1,7 +1,9 @@
 package chien.demo.shopdemo.service;
 
 import chien.demo.shopdemo.dto.ItemDto;
-import chien.demo.shopdemo.exception.ItemCascadeDeleteError;import chien.demo.shopdemo.exception.ItemNotFoundException;import java.util.List;
+import chien.demo.shopdemo.exception.ItemCascadeDeleteError;
+import chien.demo.shopdemo.exception.ItemNotFoundException;
+import java.util.List;
 
 /** The interface Item service. */
 public interface ItemService {
@@ -27,14 +29,14 @@ public interface ItemService {
    * @param dto the dto
    * @return the item dto
    */
-  ItemDto update(int id, ItemDto dto);
+  ItemDto update(int id, ItemDto dto) throws ItemNotFoundException;
 
   /**
    * Delete.
    *
    * @param id the id
    */
-  String deleteById(int id)throws ItemCascadeDeleteError, ItemNotFoundException;
+  String deleteById(int id) throws ItemCascadeDeleteError, ItemNotFoundException;
 
   /**
    * Find by id item dto.

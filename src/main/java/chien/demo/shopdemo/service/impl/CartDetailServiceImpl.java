@@ -1,6 +1,7 @@
 package chien.demo.shopdemo.service.impl;
 
 import chien.demo.shopdemo.dto.CartDetailDto;
+import chien.demo.shopdemo.exception.CartDetailNotFoundException;
 import chien.demo.shopdemo.mapper.CartDetailMapper;
 import chien.demo.shopdemo.model.Cart;
 import chien.demo.shopdemo.model.CartDetail;
@@ -40,22 +41,24 @@ public class CartDetailServiceImpl implements CartDetailService {
   }
 
   @Override
-  public CartDetailDto update(int id, CartDetailDto dto) {
-    //    CartDetail cartDetail = result.orElseGet(CartDetail::new);  should check for existence
-    CartDetail cartDetail = CartDetailMapper.getInstance().toEntity(dto);
-    Optional<Cart> cart = cartRepository.findById(dto.getCartId());
-    if (cart.isPresent()) {
-      cartDetail.setCart(cart.get());
+  public CartDetailDto update(int id, int quantity) throws CartDetailNotFoundException {
+    Optional<CartDetail> result = cartDetailRepository.findById(id);
+    if (result.isPresent()) {
+      CartDetail cartDetail = result.get();
+      cartDetail.setQuantity(quantity);
+      return CartDetailMapper.getInstance().toDto(cartDetailRepository.save(cartDetail));
+    } else {
+      throw new CartDetailNotFoundException();
     }
-    cartDetail.setId(id);
-    return CartDetailMapper.getInstance().toDto(cartDetailRepository.save(cartDetail));
   }
 
   @Override
-  public void deleteById(int id) {
+  public void deleteById(int id) throws CartDetailNotFoundException {
     Optional<CartDetail> result = cartDetailRepository.findById(id);
     if (result.isPresent()) {
       cartDetailRepository.deleteById(result.get().getId());
+    } else {
+      throw new CartDetailNotFoundException();
     }
   }
 

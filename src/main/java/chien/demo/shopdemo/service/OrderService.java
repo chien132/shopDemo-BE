@@ -51,4 +51,6 @@ public interface OrderService {
    * @return the order dto
    */
   OrderDto findById(int id);
+
+  OrderDto findLatestByCustomerId(int customerId);
 }

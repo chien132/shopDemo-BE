@@ -33,6 +33,7 @@ public class OrderMapper {
         .setId(orderDto.getId())
         .setOrderDate(orderDto.getOrderDate())
         .setCustomer(CustomerMapper.getInstance().toEntity(orderDto.getCustomer()))
+        .setCompleted(orderDto.isCompleted())
         .setOrderDetails(
             orderDto.getOrderDetails() == null
                 ? Collections.emptyList()
@@ -52,6 +53,7 @@ public class OrderMapper {
         .setId(order.getId())
         .setOrderDate(order.getOrderDate())
         .setCustomer(CustomerMapper.getInstance().toDto(order.getCustomer()))
+        .setCompleted(order.isCompleted())
         .setOrderDetails(
             order.getOrderDetails() == null
                 ? Collections.emptyList()

@@ -4,7 +4,9 @@ import chien.demo.shopdemo.dto.CartDetailDto;
 import chien.demo.shopdemo.dto.CartDto;
 import chien.demo.shopdemo.dto.CustomerDto;
 import chien.demo.shopdemo.dto.ItemDto;
+import chien.demo.shopdemo.exception.CartDetailNotFoundException;
 import chien.demo.shopdemo.exception.CustomerNotFoundException;
+import chien.demo.shopdemo.exception.QuantityLessThanOneException;
 import chien.demo.shopdemo.service.CartDetailService;
 import chien.demo.shopdemo.service.CartService;
 import chien.demo.shopdemo.service.CustomerService;
@@ -82,7 +84,7 @@ public class CartController {
    */
   @PostMapping
   public ResponseEntity<CartDto> addItem(@RequestBody Map<String, String> values)
-      throws CustomerNotFoundException {
+      throws CustomerNotFoundException, CartDetailNotFoundException, QuantityLessThanOneException {
     ItemDto item = itemService.findById(Integer.parseInt(values.get("itemId")));
     int quantity = Integer.parseInt(values.get("quantity"));
     int customerid = Integer.parseInt(values.get("customerId"));
@@ -93,13 +95,15 @@ public class CartController {
     }
     for (CartDetailDto c : foundCart.getCartDetails()) {
       if (c.getItem().getId() == item.getId()) {
-        if ((c.getQuantity() + quantity) < 1) {
+        if ((c.getQuantity() + quantity) == 0) {
           deleteItem(c.getId());
           foundCart.getCartDetails().remove(c);
           return ResponseEntity.ok(foundCart);
+        } else if ((c.getQuantity() + quantity) < 0) {
+          throw new QuantityLessThanOneException();
         }
         c.setQuantity(c.getQuantity() + quantity);
-        cartDetailService.update(c.getId(), c);
+        cartDetailService.update(c.getId(), c.getQuantity());
         return ResponseEntity.ok(cartService.findByCustomerId(customerid));
       }
     }
@@ -116,12 +120,10 @@ public class CartController {
    * @return status
    */
   @PutMapping
-  public ResponseEntity<HttpStatus> updateItem(@RequestBody Map<String, String> values) {
-    int quantity = Integer.parseInt(values.get("quantity"));
-    CartDetailDto cartDetailDto =
-        cartDetailService.findById(Integer.parseInt(values.get("cartDetailId")));
-    cartDetailDto.setQuantity(quantity);
-    cartDetailService.create(cartDetailDto);
+  public ResponseEntity<HttpStatus> updateItem(@RequestBody Map<String, String> values)
+      throws CartDetailNotFoundException {
+    cartDetailService.update(
+        Integer.parseInt(values.get("cartDetailId")), Integer.parseInt(values.get("quantity")));
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
@@ -132,7 +134,8 @@ public class CartController {
    * @return status
    */
   @DeleteMapping("{id}")
-  public ResponseEntity<HttpStatus> deleteItem(@PathVariable("id") int id) {
+  public ResponseEntity<HttpStatus> deleteItem(@PathVariable("id") int id)
+      throws CartDetailNotFoundException {
     cartDetailService.deleteById(id);
     return ResponseEntity.ok().build();
   }

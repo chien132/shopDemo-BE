@@ -28,4 +28,6 @@ public class OrderDto implements Serializable {
   private LocalDate orderDate;
 
   private List<OrderDetailDto> orderDetails;
+
+  private boolean completed;
 }
