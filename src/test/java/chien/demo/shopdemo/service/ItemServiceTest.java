@@ -7,6 +7,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import chien.demo.shopdemo.dto.ItemDto;
+import chien.demo.shopdemo.exception.ItemCascadeDeleteError;
+import chien.demo.shopdemo.exception.ItemNotFoundException;
 import chien.demo.shopdemo.mapper.ItemMapper;
 import chien.demo.shopdemo.model.Item;
 import chien.demo.shopdemo.repository.ItemRepository;
@@ -69,7 +71,7 @@ class ItemServiceTest {
   }
 
   @Test
-  void whenUpdate_shouldReturnItem() {
+  void whenUpdate_shouldReturnItem() throws ItemNotFoundException {
     given(itemRepository.findById(itemDto.getId())).willReturn(Optional.of(item));
     itemDto.setName("Orther name");
     given(itemRepository.save(item)).willReturn(item);
@@ -79,7 +81,7 @@ class ItemServiceTest {
   }
 
   @Test
-  void whenDelete_shouldReturnTrue() {
+  void whenDelete_shouldReturnTrue() throws ItemCascadeDeleteError, ItemNotFoundException {
     given(itemRepository.findById(itemDto.getId())).willReturn(Optional.of(item));
     willDoNothing().given(itemRepository).deleteById(itemDto.getId());
     itemService.deleteById(itemDto.getId());

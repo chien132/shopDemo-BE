@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import chien.demo.shopdemo.model.Cart;
 import chien.demo.shopdemo.model.Customer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
@@ -27,7 +28,7 @@ class CartRepositoryTest {
   @BeforeEach
   void setUp() {
     customer = customerRepository.save(new Customer(123, "un", "pw", true));
-    cart = new Cart(123, customer, new ArrayList<>());
+    cart = new Cart(123, customer, Collections.emptyList());
   }
 
   @AfterEach
@@ -70,7 +71,7 @@ class CartRepositoryTest {
   void whenFindAll_shouldReturnList() {
     List<Cart> carts = new ArrayList<>();
     for (int i = 0; i < 3; i++) {
-      carts.add(new Cart(i, customer, new ArrayList<>()));
+      carts.add(new Cart(i, customer, Collections.emptyList()));
       cartRepository.save(carts.get(i));
     }
     List<Cart> foundList = cartRepository.findAll();

@@ -6,8 +6,9 @@ import chien.demo.shopdemo.model.Cart;
 import chien.demo.shopdemo.model.CartDetail;
 import chien.demo.shopdemo.model.Customer;
 import chien.demo.shopdemo.model.Item;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
@@ -33,9 +34,9 @@ class CartDetailRepositoryTest {
   @BeforeEach
   void setUp() {
     customer = customerRepository.save(new Customer(123, "u", "p", false));
-    cart = cartRepository.save(new Cart(123, customer, new ArrayList<>()));
+    cart = cartRepository.save(new Cart(123, customer, Collections.emptyList()));
     item = itemRepository.save(new Item(123, "Test", 1));
-    cartDetail = new CartDetail(123, cart, item, 1, new Date());
+    cartDetail = new CartDetail(123, cart, item, 1, LocalDate.now());
   }
 
   @AfterEach
@@ -81,7 +82,7 @@ class CartDetailRepositoryTest {
   void whenFindAll_shouldReturnList() {
     List<CartDetail> cartDetails = new ArrayList<>();
     for (int i = 0; i < 3; i++) {
-      cartDetails.add(new CartDetail(i, cart, item, 1, new Date()));
+      cartDetails.add(new CartDetail(i, cart, item, 1, LocalDate.now()));
       cartDetailRepository.save(cartDetails.get(i));
     }
     List<CartDetail> foundList = cartDetailRepository.findAll();

@@ -6,8 +6,9 @@ import chien.demo.shopdemo.model.Customer;
 import chien.demo.shopdemo.model.Item;
 import chien.demo.shopdemo.model.Order;
 import chien.demo.shopdemo.model.OrderDetail;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
@@ -33,7 +34,9 @@ class OrderDetailRepositoryTest {
   @BeforeEach
   void setUp() {
     customer = customerRepository.save(new Customer(123, "u", "p", false));
-    order = orderRepository.save(new Order(123, customer, new Date(), new ArrayList<>()));
+    order =
+        orderRepository.save(
+            new Order(123, customer, LocalDate.now(), Collections.emptyList(), false));
     item = itemRepository.save(new Item(123, "Test", 1));
     orderDetail = new OrderDetail(123, order, item, 2);
   }

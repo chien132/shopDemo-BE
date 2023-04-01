@@ -4,8 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import chien.demo.shopdemo.model.Customer;
 import chien.demo.shopdemo.model.Order;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
@@ -28,7 +29,7 @@ class OrderRepositoryTest {
   @BeforeEach
   void setUp() {
     customer = customerRepository.save(new Customer(123, "u", "p", true));
-    order = new Order(123, customer, new Date(), new ArrayList<>());
+    order = new Order(123, customer, LocalDate.now(), Collections.emptyList(), false);
   }
 
   @AfterEach
@@ -71,7 +72,7 @@ class OrderRepositoryTest {
   void whenFindAll_shouldReturnList() {
     List<Order> orders = new ArrayList<>();
     for (int i = 0; i < 3; i++) {
-      orders.add(new Order(i, customer, new Date(), new ArrayList<>()));
+      orders.add(new Order(i, customer, LocalDate.now(), Collections.emptyList(), false));
       orderRepository.save(orders.get(i));
     }
     List<Order> foundList = orderRepository.findAll();
@@ -82,7 +83,9 @@ class OrderRepositoryTest {
   void whenFindAllByCustomerId_shouldReturnList() {
     List<Order> orders = new ArrayList<>();
     for (int i = 0; i < 3; i++) {
-      orders.add(orderRepository.save(new Order(i, customer, new Date(), new ArrayList<>())));
+      orders.add(
+          orderRepository.save(
+              new Order(i, customer, LocalDate.now(), Collections.emptyList(), false)));
     }
     List<Order> foundList = orderRepository.findAllByCustomerId(customer.getId());
     assertThat(foundList).hasSameElementsAs(orders);

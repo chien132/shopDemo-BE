@@ -16,8 +16,9 @@ import chien.demo.shopdemo.model.OrderDetail;
 import chien.demo.shopdemo.repository.OrderDetailRepository;
 import chien.demo.shopdemo.repository.OrderRepository;
 import chien.demo.shopdemo.service.impl.OrderDetailServiceImpl;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,7 +44,9 @@ class OrderDetailServiceTest {
 
   @BeforeEach
   void setUp() {
-    orderDto = new OrderDto(1, new CustomerDto(1, "u", "p", true), new Date(), new ArrayList<>());
+    orderDto =
+        new OrderDto(
+            1, new CustomerDto(1, "u", "p", true), LocalDate.now(), Collections.emptyList(), false);
     itemDto = new ItemDto(1, "Item", 123);
     orderDetailDto = new OrderDetailDto(1, orderDto.getId(), itemDto, 2);
     orderDetail = OrderDetailMapper.getInstance().toEntity(orderDetailDto);

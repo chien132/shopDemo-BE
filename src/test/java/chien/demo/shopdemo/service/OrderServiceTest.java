@@ -12,8 +12,9 @@ import chien.demo.shopdemo.mapper.OrderMapper;
 import chien.demo.shopdemo.model.Order;
 import chien.demo.shopdemo.repository.OrderRepository;
 import chien.demo.shopdemo.service.impl.OrderServiceImpl;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,7 +38,9 @@ class OrderServiceTest {
 
   @BeforeEach
   void setUp() {
-    orderDto = new OrderDto(1, new CustomerDto(1, "u", "p", true), new Date(), new ArrayList<>());
+    orderDto =
+        new OrderDto(
+            1, new CustomerDto(1, "u", "p", true), LocalDate.now(), Collections.emptyList(), false);
     order = OrderMapper.getInstance().toEntity(orderDto);
   }
 
@@ -51,7 +54,8 @@ class OrderServiceTest {
   void whenFindAll_shouldReturnList() {
     List<OrderDto> mockOrders = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
-      mockOrders.add(new OrderDto(i, new CustomerDto(), new Date(), new ArrayList<>()));
+      mockOrders.add(
+          new OrderDto(i, new CustomerDto(), LocalDate.now(), Collections.emptyList(), false));
     }
     given(orderRepository.findAll())
         .willReturn(
@@ -68,7 +72,7 @@ class OrderServiceTest {
     List<OrderDto> mockOrders = new ArrayList<>();
     CustomerDto customerDto = new CustomerDto(1, "Test customer", "123", true);
     for (int i = 0; i < 5; i++) {
-      mockOrders.add(new OrderDto(i, customerDto, new Date(), new ArrayList<>()));
+      mockOrders.add(new OrderDto(i, customerDto, LocalDate.now(), Collections.emptyList(), false));
     }
     given(orderRepository.findAllByCustomerId(customerDto.getId()))
         .willReturn(

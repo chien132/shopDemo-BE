@@ -13,6 +13,7 @@ import chien.demo.shopdemo.model.Cart;
 import chien.demo.shopdemo.repository.CartRepository;
 import chien.demo.shopdemo.service.impl.CartServiceImpl;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,7 +36,7 @@ class CartServiceTest {
 
   @BeforeEach
   void setUp() {
-    cartDto = new CartDto(1, new CustomerDto(1, "u", "p", true), new ArrayList<>());
+    cartDto = new CartDto(1, new CustomerDto(1, "u", "p", true), Collections.emptyList());
     cart = CartMapper.getInstance().toEntity(cartDto);
   }
 
@@ -50,7 +51,7 @@ class CartServiceTest {
     CustomerDto customer = new CustomerDto(1, "u", "p", true);
     List<CartDto> mockCarts = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
-      mockCarts.add(new CartDto(i, customer, new ArrayList<>()));
+      mockCarts.add(new CartDto(i, customer, Collections.emptyList()));
     }
     given(cartRepository.findAll())
         .willReturn(
