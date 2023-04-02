@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /** Item controller. */
@@ -36,6 +37,12 @@ public class ItemController {
   @GetMapping
   public ResponseEntity<List<ItemDto>> getAllItems() {
     return ResponseEntity.ok(itemService.findAll());
+  }
+
+  @GetMapping("search")
+  public ResponseEntity<List<ItemDto>> getAllItemsByNameLike(
+      @RequestParam(name = "search") String search) {
+    return ResponseEntity.ok(itemService.findAllByNameLike(search));
   }
 
   /**

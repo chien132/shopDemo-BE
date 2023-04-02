@@ -73,4 +73,11 @@ public class ItemServiceImpl implements ItemService {
       return null;
     }
   }
+
+  @Override
+  public List<ItemDto> findAllByNameLike(String search) {
+    return itemRepository.findAllByNameLikeIgnoreCase(search).stream()
+        .map(item -> ItemMapper.getInstance().toDto(item))
+        .collect(Collectors.toList());
+  }
 }

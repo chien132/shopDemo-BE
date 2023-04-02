@@ -45,4 +45,12 @@ public interface ItemService {
    * @return the item dto
    */
   ItemDto findById(int id);
+
+  /**
+   * Find all items with name like input string.
+   *
+   * @param search the search string
+   * @return the item list
+   */
+  List<ItemDto> findAllByNameLike(String search);
 }
