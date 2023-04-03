@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 /** Order controller. */
 @RestController
 @RequestMapping("/api/orders")
+@PreAuthorize("hasRole('CUSTOMER')")
 public class OrderController {
   private final OrderService orderService;
   private final OrderDetailService orderDetailService;
@@ -58,6 +60,7 @@ public class OrderController {
    * @return the all orders
    */
   @GetMapping
+  @PreAuthorize("hasRole('OWNER')")
   public ResponseEntity<List<OrderDto>> getAllOrders() {
     return ResponseEntity.ok(orderService.findAll());
   }
@@ -130,6 +133,7 @@ public class OrderController {
    * @return the response entity
    */
   @PutMapping
+  @PreAuthorize("hasRole('OWNER')")
   public ResponseEntity<OrderDto> completeOrder(@RequestBody int orderId) {
     OrderDto order = orderService.findById(orderId);
     order.setCompleted(true);

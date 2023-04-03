@@ -5,9 +5,11 @@ import chien.demo.shopdemo.exception.ItemCascadeDeleteError;
 import chien.demo.shopdemo.exception.ItemNotFoundException;
 import chien.demo.shopdemo.service.ItemService;
 import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -68,7 +70,8 @@ public class ItemController {
    * @return the response entity
    */
   @PostMapping
-  public ResponseEntity<ItemDto> createItem(@RequestBody ItemDto requestItem) {
+  @PreAuthorize("hasRole('OWNER')")
+  public ResponseEntity<ItemDto> createItem(@Valid @RequestBody ItemDto requestItem) {
     ItemDto savedItem = itemService.create(requestItem);
     return ResponseEntity.ok(savedItem);
   }
@@ -80,7 +83,8 @@ public class ItemController {
    * @return the response entity
    */
   @PutMapping
-  public ResponseEntity<ItemDto> updateItem(@RequestBody ItemDto requestItem)
+  @PreAuthorize("hasRole('OWNER')")
+  public ResponseEntity<ItemDto> updateItem(@Valid @RequestBody ItemDto requestItem)
       throws ItemNotFoundException {
     ItemDto savedItem = itemService.update(requestItem.getId(), requestItem);
     return ResponseEntity.ok(savedItem);
@@ -93,6 +97,7 @@ public class ItemController {
    * @return the response entity
    */
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasRole('OWNER')")
   public ResponseEntity<HttpStatus> deleteItem(@PathVariable("id") int id)
       throws ItemCascadeDeleteError, ItemNotFoundException {
     String result = itemService.deleteById(id);
