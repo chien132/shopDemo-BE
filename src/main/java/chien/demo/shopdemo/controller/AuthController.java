@@ -101,7 +101,7 @@ public class AuthController {
             0,
             signUpRequest.getUsername(),
             encoder.encode(signUpRequest.getPassword()),
-            signUpRequest.isRole());
+            true);
 
     customerService.create(customerDto);
     return ResponseEntity.ok(Collections.singletonMap("message", "User registered successfully!"));
