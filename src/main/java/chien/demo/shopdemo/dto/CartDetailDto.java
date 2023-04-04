@@ -19,6 +19,6 @@ public class CartDetailDto implements Serializable {
   private ItemDto item;
   private int quantity;
 
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Etc/GMT+7")
   private LocalDate dateAdded;
 }

@@ -98,10 +98,7 @@ public class AuthController {
     // Create new user's account
     CustomerDto customerDto =
         new CustomerDto(
-            0,
-            signUpRequest.getUsername(),
-            encoder.encode(signUpRequest.getPassword()),
-            true);
+            0, signUpRequest.getUsername(), encoder.encode(signUpRequest.getPassword()), true);
 
     customerService.create(customerDto);
     return ResponseEntity.ok(Collections.singletonMap("message", "User registered successfully!"));

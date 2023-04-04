@@ -24,7 +24,7 @@ public class OrderDto implements Serializable {
   @JsonIdentityReference(alwaysAsId = true)
   private CustomerDto customer;
 
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Etc/GMT+7")
   private LocalDate orderDate;
 
   private List<OrderDetailDto> orderDetails;
