@@ -17,6 +17,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -102,5 +104,18 @@ public class AuthController {
 
     customerService.create(customerDto);
     return ResponseEntity.ok(Collections.singletonMap("message", "User registered successfully!"));
+  }
+
+  /**
+   * Check username available response entity.
+   *
+   * @param username the username
+   * @return the response entity
+   */
+  @GetMapping("/check/{u}")
+  public ResponseEntity<Boolean> checkUsernameAvailable(@PathVariable("u") String username) {
+    return customerService.existsByUsername(username)
+        ? ResponseEntity.ok(true)
+        : ResponseEntity.ok(false);
   }
 }
