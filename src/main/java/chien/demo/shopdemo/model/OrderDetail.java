@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,15 +24,17 @@ public class OrderDetail {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "orderId", nullable = false)
   //  @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
   //  @JsonIdentityReference(alwaysAsId = true)
   private Order order;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "itemId")
   private Item item;
 
-  private int quantity;
+  @NotNull private int quantity;
 }

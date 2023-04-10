@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,14 +29,15 @@ public class Order {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "customerId")
   private Customer customer;
 
-  private LocalDate orderDate;
+  @NotNull private LocalDate orderDate;
 
   @OneToMany(mappedBy = "order")
   private List<OrderDetail> orderDetails;
 
-  private boolean completed;
+  @NotNull private boolean completed;
 }

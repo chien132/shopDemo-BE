@@ -1,0 +1,31 @@
+version: '3.4'
+
+services:
+  mysql:
+    image: mysql
+    restart: unless-stopped
+    volumes:
+      - /home/docker/volumes/myapp/mysql/:/var/lib/mysql/
+    environment:
+      - MYSQL_ROOT_PASSWORD=toor
+      - MYSQL_DATABASE=shopdemodb
+    ports:
+      - 3306:3306
+    container_name: mysqldb
+  shopdemo:
+    depends_on:
+      - mysql
+    image: shopdemo:latest
+    restart: on-failure
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/shopdemodb?createDatabaseIfNotExists=true&autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=utf8
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: toor
+    ports:
+      - 8080:8080
+    # volumes:
+    #   - /data/spring-boot-app
+    container_name: shopdemo-api

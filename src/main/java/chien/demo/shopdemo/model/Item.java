@@ -5,6 +5,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,8 +23,9 @@ public class Item {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
-  private String name;
-  private double price;
+  @NotNull @NotBlank private String name;
 
-  // orderDetailId
+  @NotNull
+  @Min(0)
+  private double price;
 }

@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,15 +25,17 @@ public class CartDetail {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "cartId")
   private Cart cart;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "itemId", nullable = false)
   private Item item;
 
-  private int quantity;
+  @NotNull private int quantity;
 
-  private LocalDate dateAdded;
+  @NotNull private LocalDate dateAdded;
 }
