@@ -29,7 +29,7 @@ public class OrderServiceImpl implements OrderService {
 
   @Override
   public List<OrderDto> findAllByCustomerId(int id) {
-    return orderRepository.findAllByCustomerId(id).stream()
+    return orderRepository.findAllByCustomerIdOrderByIdDesc(id).stream()
         .map(order -> OrderMapper.getInstance().toDto(order))
         .collect(Collectors.toList());
   }

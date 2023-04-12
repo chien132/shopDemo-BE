@@ -14,7 +14,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
    * @param id the id
    * @return the list
    */
-  List<Order> findAllByCustomerId(int id);
+  List<Order> findAllByCustomerIdOrderByIdDesc(int id);
 
   @Query(
       nativeQuery = true,

@@ -87,7 +87,7 @@ class OrderRepositoryTest {
           orderRepository.save(
               new Order(i, customer, LocalDate.now(), Collections.emptyList(), false)));
     }
-    List<Order> foundList = orderRepository.findAllByCustomerId(customer.getId());
+    List<Order> foundList = orderRepository.findAllByCustomerIdOrderByIdDesc(customer.getId());
     assertThat(foundList).hasSameElementsAs(orders);
   }
 }

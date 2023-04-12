@@ -1,31 +1,39 @@
-version: '3.4'
-
 services:
-  mysql:
-    image: mysql
-    restart: unless-stopped
-    volumes:
-      - /home/docker/volumes/myapp/mysql/:/var/lib/mysql/
-    environment:
-      - MYSQL_ROOT_PASSWORD=toor
-      - MYSQL_DATABASE=shopdemodb
-    ports:
-      - 3306:3306
-    container_name: mysqldb
-  shopdemo:
-    depends_on:
-      - mysql
-    image: shopdemo:latest
-    restart: on-failure
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/shopdemodb?createDatabaseIfNotExists=true&autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=utf8
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: toor
+  # mysql:
+  #   image: mysql
+  #   # restart: unless-stopped
+  #   volumes:
+  #     - /home/docker/volumes/myapp/mysql/:/var/lib/mysql/
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=toor
+  #     - MYSQL_DATABASE=shopdemodb
+  #   ports:
+  #     - 3306:3306
+  #   container_name: mysqldb
+  shopdemo-api:
+    # depends_on:
+    #   - mysql
+    image: shopdemo-api
+    # restart: on-failure
+    #    build:
+    #      context: ./
+    #      dockerfile: Dockerfile
+    # environment:
+    # SPRING_DATASOURCE_URL: jdbc:mysql://host.docker.internal:3306/shopdemodb?createDatabaseIfNotExists=true&autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=utf8
+    # SPRING_DATASOURCE_USERNAME: root
+    # SPRING_DATASOURCE_PASSWORD: toor
+    # SPRING_DATASOURCE_URL: jdbc:oracle:thin:@//host.docker.internal:1521/ORCLPDB1?createDatabaseIfNotExists=true&autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=utf8
+    # SPRING_DATASOURCE_USERNAME: sa
+    # SPRING_DATASOURCE_PASSWORD: 123
     ports:
       - 8080:8080
     # volumes:
     #   - /data/spring-boot-app
     container_name: shopdemo-api
+    network_mode: bridge
+#     networks:
+#       - mydb-network
+# networks:
+#   mydb-network:
+#     external:
+#       name: oracledb_network

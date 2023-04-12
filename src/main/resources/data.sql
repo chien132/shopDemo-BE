@@ -19,11 +19,11 @@ insert into items(name, price)
 values ('RTX 4090', 52000000);
 
 insert into orders(customerId, orderDate, completed)
-values (1, '2023-03-18', false);
+values (2, '18-Mar-23', 0);
 insert into orders(customerId, orderDate, completed)
-values (2, '2023-03-15', false);
+values (2, '15-Mar-23', 0);
 insert into orders(customerId, orderDate, completed)
-values (2, '2023-03-12', false);
+values (2, '12-Mar-23', 0);
 
 insert into orderDetails(orderId, itemId, quantity)
 values (1, 1, 2);
@@ -43,11 +43,11 @@ values (2);
 insert into carts(customerId)
 values (1);
 insert into cartDetails(cartId, itemId, quantity, dateAdded)
-values (1, 3, 1, '2023-03-15');
+values (1, 3, 1, '15-Mar-23');
 insert into cartDetails(cartId, itemId, quantity, dateAdded)
-values (1, 1, 2, '2023-03-17');
+values (1, 1, 2, '17-Mar-23');
 insert into cartDetails(cartId, itemId, quantity, dateAdded)
-values (1, 2, 1, '2023-03-23');
+values (1, 2, 1, '23-Mar-23');
 
 
 insert into items(name,price) values('Ống kính Fujifilm XF 56mm f/1.2 R',20900000);

@@ -74,14 +74,14 @@ class OrderServiceTest {
     for (int i = 0; i < 5; i++) {
       mockOrders.add(new OrderDto(i, customerDto, LocalDate.now(), Collections.emptyList(), false));
     }
-    given(orderRepository.findAllByCustomerId(customerDto.getId()))
+    given(orderRepository.findAllByCustomerIdOrderByIdDesc(customerDto.getId()))
         .willReturn(
             mockOrders.stream()
                 .map(o -> OrderMapper.getInstance().toEntity(o))
                 .collect(Collectors.toList()));
     List<OrderDto> actualOrders = orderService.findAllByCustomerId(customerDto.getId());
     assertThat(actualOrders).hasSameElementsAs(mockOrders);
-    verify(orderRepository).findAllByCustomerId(customerDto.getId());
+    verify(orderRepository).findAllByCustomerIdOrderByIdDesc(customerDto.getId());
   }
 
   @Test
