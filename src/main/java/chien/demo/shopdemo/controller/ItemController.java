@@ -4,9 +4,15 @@ import chien.demo.shopdemo.dto.ItemDto;
 import chien.demo.shopdemo.exception.ItemCascadeDeleteError;
 import chien.demo.shopdemo.exception.ItemNotFoundException;
 import chien.demo.shopdemo.service.ItemService;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,9 +48,52 @@ public class ItemController {
   }
 
   @GetMapping("search")
-  public ResponseEntity<List<ItemDto>> getAllItemsByNameLike(
-      @RequestParam(name = "search") String search) {
+  public ResponseEntity<List<ItemDto>> getAllItemsByNameLike(@RequestParam String search) {
     return ResponseEntity.ok(itemService.findAllByNameLike(search));
+  }
+
+  /**
+   * Search paginated response entity.
+   *
+   * @param search the search string
+   * @param page the page number
+   * @param size the page size
+   * @param sort the sort type
+   * @return the response entity
+   */
+  @GetMapping("searchPaginated")
+  public ResponseEntity<Map<String, Object>> searchPaginated(
+      @RequestParam String search,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "0") int size,
+      @RequestParam(defaultValue = "iddesc") String sort) {
+    try {
+      Sort sortable = Sort.by("id").descending();
+      if (sort.equals("idasc")) {
+        sortable = Sort.by("id").ascending();
+      } else if (sort.equals("nameasc")) {
+        sortable = Sort.by("name").ascending();
+      } else if (sort.equals("namedesc")) {
+        sortable = Sort.by("name").descending();
+      } else if (sort.equals("priceasc")) {
+        sortable = Sort.by("price").ascending();
+      } else if (sort.equals("pricedesc")) {
+        sortable = Sort.by("price").descending();
+      }
+
+      List<ItemDto> items;
+      Pageable paging = PageRequest.of(page, size, sortable);
+
+      Page<ItemDto> pageItems = itemService.findAllPaginated(search, paging);
+      items = pageItems.getContent();
+
+      Map<String, Object> response = new HashMap<>();
+      response.put("items", items);
+      response.put("totalItems", pageItems.getTotalElements());
+      return new ResponseEntity<>(response, HttpStatus.OK);
+    } catch (Exception e) {
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**

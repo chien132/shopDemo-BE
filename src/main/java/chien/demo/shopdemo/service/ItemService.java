@@ -4,6 +4,8 @@ import chien.demo.shopdemo.dto.ItemDto;
 import chien.demo.shopdemo.exception.ItemCascadeDeleteError;
 import chien.demo.shopdemo.exception.ItemNotFoundException;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /** The interface Item service. */
 public interface ItemService {
@@ -53,4 +55,6 @@ public interface ItemService {
    * @return the item list
    */
   List<ItemDto> findAllByNameLike(String search);
+
+  Page<ItemDto> findAllPaginated(String name, Pageable pageable);
 }
