@@ -39,6 +39,9 @@ dependencies {
     implementation                  libs.mapstruct
     implementation                  libs.log4j2
     implementation                  libs.swagger
+    implementation                  libs.apachePoi
+    implementation                  libs.apachePoiOOXML
+    implementation                  libs.itextCore
     //implementation                  libs.tomcatJdbc
     //implementation                  libs.ojdbc8
 

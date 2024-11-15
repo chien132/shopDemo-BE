@@ -3,7 +3,6 @@ package chien.demo.shopdemo.service;
 import chien.demo.shopdemo.dto.ItemDto;
 import chien.demo.shopdemo.exception.ItemCascadeDeleteError;
 import chien.demo.shopdemo.exception.ItemNotFoundException;
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,6 +57,4 @@ public interface ItemService {
   List<ItemDto> findAllByNameLike(String search);
 
   Page<ItemDto> findAllPaginated(String name, Pageable pageable);
-
-  ByteArrayOutputStream downloadItems();
 }

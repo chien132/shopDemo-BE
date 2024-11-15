@@ -56,3 +56,9 @@ openApi:
 jwt:
   jwtSecret: yaTPkD+Mu91G2L888suk/AukIrQfosN7Joo8A55mYtLPray8II4+yuV1NQ6/OD96suhlFvUjdn58
   jwtExpirationMs: 86400000
+report:
+  template-path: /opt/file/master/upload/
+  startCell:
+    column: 1
+    row: 2
+  file-name: item_report.xlsx

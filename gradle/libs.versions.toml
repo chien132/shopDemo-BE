@@ -11,6 +11,8 @@ flyway = "10.10.0"
 flywayMysql = "10.10.0"
 mapstruct = "1.5.5.Final"
 swagger = "2.6.0"
+apachePoi = '5.3.0'
+itextCore = '8.0.5'
 
 [libraries]
 springBootStarterDataJpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "springBoot" }
@@ -31,3 +33,6 @@ mapstructProcessor = { module = 'org.mapstruct:mapstruct-processor', version.ref
 log4j2 = { module = 'org.springframework.boot:spring-boot-starter-log4j2', version.ref = 'springBoot' }
 swagger = { module = 'org.springdoc:springdoc-openapi-starter-webmvc-ui', version.ref = 'swagger' }
 devtools = { module = 'org.springframework.boot:spring-boot-devtools', version.ref = 'springBoot' }
+apachePoi = { module = 'org.apache.poi:poi', version.ref = 'apachePoi' }
+apachePoiOOXML = { module = 'org.apache.poi:poi-ooxml', version.ref = 'apachePoi' }
+itextCore = { module = 'com.itextpdf:itext-core', version.ref = 'itextCore'}

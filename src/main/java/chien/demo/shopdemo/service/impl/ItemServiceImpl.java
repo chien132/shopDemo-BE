@@ -7,7 +7,6 @@ import chien.demo.shopdemo.mapper.ItemMapper;
 import chien.demo.shopdemo.model.Item;
 import chien.demo.shopdemo.repository.ItemRepository;
 import chien.demo.shopdemo.service.ItemService;
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -81,12 +80,5 @@ public class ItemServiceImpl implements ItemService {
     return itemRepository
         .findAllByNameLikeIgnoreCase(name, pageable)
         .map(ItemMapper.INSTANCE::toDto);
-  }
-
-  @Override
-  public ByteArrayOutputStream downloadItems() {
-    //List<Item> items = itemRepository.findAll();
-    // TODO: implement this function
-    return null;
   }
 }
