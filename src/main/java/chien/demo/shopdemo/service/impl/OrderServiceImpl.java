@@ -8,7 +8,6 @@ import chien.demo.shopdemo.repository.OrderRepository;
 import chien.demo.shopdemo.service.OrderService;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,16 +22,12 @@ public class OrderServiceImpl implements OrderService {
 
   @Override
   public List<OrderDto> findAll() {
-    return orderRepository.findAll().stream()
-        .map(order -> OrderMapper.INSTANCE.toDto(order))
-        .collect(Collectors.toList());
+    return OrderMapper.INSTANCE.toDtoList(orderRepository.findAll());
   }
 
   @Override
   public List<OrderDto> findAllByCustomerId(int id) {
-    return orderRepository.findAllByCustomerIdOrderByIdDesc(id).stream()
-        .map(order -> OrderMapper.INSTANCE.toDto(order))
-        .collect(Collectors.toList());
+    return OrderMapper.INSTANCE.toDtoList(orderRepository.findAllByCustomerIdOrderByIdDesc(id));
   }
 
   @Override
@@ -55,28 +50,18 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public void deleteById(int id) {
     Optional<Order> result = orderRepository.findById(id);
-    if (result.isPresent()) {
-      orderRepository.deleteById(result.get().getId());
-    }
+    result.ifPresent(order -> orderRepository.deleteById(order.getId()));
   }
 
   @Override
   public OrderDto findById(int id) {
     Optional<Order> result = orderRepository.findById(id);
-    if (result.isPresent()) {
-      return OrderMapper.INSTANCE.toDto(result.get());
-    } else {
-      return null;
-    }
+    return result.map(OrderMapper.INSTANCE::toDto).orElse(null);
   }
 
   @Override
   public OrderDto findLatestByCustomerId(int customerId) {
     Optional<Order> result = orderRepository.findLatestByCustomerId(customerId);
-    if (result.isPresent()) {
-      return OrderMapper.INSTANCE.toDto(result.get());
-    } else {
-      return null;
-    }
+    return result.map(OrderMapper.INSTANCE::toDto).orElse(null);
   }
 }

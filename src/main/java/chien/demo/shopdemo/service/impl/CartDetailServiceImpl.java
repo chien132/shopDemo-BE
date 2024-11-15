@@ -5,11 +5,9 @@ import chien.demo.shopdemo.exception.CartDetailNotFoundException;
 import chien.demo.shopdemo.mapper.CartDetailMapper;
 import chien.demo.shopdemo.model.CartDetail;
 import chien.demo.shopdemo.repository.CartDetailRepository;
-import chien.demo.shopdemo.repository.CartRepository;
 import chien.demo.shopdemo.service.CartDetailService;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,13 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class CartDetailServiceImpl implements CartDetailService {
 
   private final CartDetailRepository cartDetailRepository;
-  private final CartRepository cartRepository;
+  //private final CartRepository cartRepository;
 
   @Override
   public List<CartDetailDto> findAll() {
-    return cartDetailRepository.findAll().stream()
-        .map(cartDetail -> CartDetailMapper.INSTANCE.toDto(cartDetail))
-        .collect(Collectors.toList());
+    return CartDetailMapper.INSTANCE.toDtoList(cartDetailRepository.findAll());
   }
 
   @Override

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -38,8 +37,8 @@ public class UserDetailsImpl implements UserDetails {
   public static UserDetailsImpl build(Customer customer) {
     List<String> roles = new ArrayList<>();
     roles.add(customer.isType() ? "ROLE_CUSTOMER" : "ROLE_OWNER");
-    List<GrantedAuthority> authorities =
-        roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+    List<SimpleGrantedAuthority> authorities =
+        roles.stream().map(SimpleGrantedAuthority::new).toList();
     return new UserDetailsImpl(
         customer.getId(), customer.getUsername(), customer.getPassword(), authorities);
   }

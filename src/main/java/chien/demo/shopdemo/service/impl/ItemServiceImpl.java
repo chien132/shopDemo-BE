@@ -10,7 +10,6 @@ import chien.demo.shopdemo.service.ItemService;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,9 +26,7 @@ public class ItemServiceImpl implements ItemService {
 
   @Override
   public List<ItemDto> findAll() {
-    return itemRepository.findAll().stream()
-        .map(item -> ItemMapper.INSTANCE.toDto(item))
-        .collect(Collectors.toList());
+    return ItemMapper.INSTANCE.toDtoList(itemRepository.findAll());
   }
 
   @Override
@@ -71,30 +68,24 @@ public class ItemServiceImpl implements ItemService {
   @Override
   public ItemDto findById(int id) {
     Optional<Item> result = itemRepository.findById(id);
-    if (result.isPresent()) {
-      return ItemMapper.INSTANCE.toDto(result.get());
-    } else {
-      return null;
-    }
+    return result.map(ItemMapper.INSTANCE::toDto).orElse(null);
   }
 
   @Override
   public List<ItemDto> findAllByNameLike(String search) {
-    return itemRepository.findAllByNameLikeIgnoreCase(search).stream()
-        .map(item -> ItemMapper.INSTANCE.toDto(item))
-        .collect(Collectors.toList());
+    return ItemMapper.INSTANCE.toDtoList(itemRepository.findAllByNameLikeIgnoreCase(search));
   }
 
   @Override
   public Page<ItemDto> findAllPaginated(String name, Pageable pageable) {
     return itemRepository
         .findAllByNameLikeIgnoreCase(name, pageable)
-        .map(item -> ItemMapper.INSTANCE.toDto(item));
+        .map(ItemMapper.INSTANCE::toDto);
   }
 
   @Override
   public ByteArrayOutputStream downloadItems() {
-    List<Item> items = itemRepository.findAll();
+    //List<Item> items = itemRepository.findAll();
     // TODO: implement this function
     return null;
   }

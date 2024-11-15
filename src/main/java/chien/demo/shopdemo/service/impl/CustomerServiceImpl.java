@@ -7,7 +7,6 @@ import chien.demo.shopdemo.model.Customer;
 import chien.demo.shopdemo.repository.CustomerRepository;
 import chien.demo.shopdemo.service.CustomerService;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,9 +25,7 @@ public class CustomerServiceImpl implements CustomerService {
 
   @Override
   public List<CustomerDto> findAll() {
-    return customerRepository.findAll().stream()
-        .map(customer -> CustomerMapper.INSTANCE.toDto(customer))
-        .collect(Collectors.toList());
+    return CustomerMapper.INSTANCE.toDtoList(customerRepository.findAll());
   }
 
   @Override

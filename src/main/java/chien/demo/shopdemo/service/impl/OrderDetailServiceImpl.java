@@ -9,7 +9,6 @@ import chien.demo.shopdemo.repository.OrderRepository;
 import chien.demo.shopdemo.service.OrderDetailService;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,18 +24,14 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 
   @Override
   public List<OrderDetailDto> findAll() {
-    return orderDetailRepository.findAll().stream()
-        .map(orderDetail -> OrderDetailMapper.INSTANCE.toDto(orderDetail))
-        .collect(Collectors.toList());
+    return OrderDetailMapper.INSTANCE.toDtoList(orderDetailRepository.findAll());
   }
 
   @Override
   public OrderDetailDto create(OrderDetailDto dto) {
     OrderDetail orderDetail = OrderDetailMapper.INSTANCE.toEntity(dto);
     Optional<Order> order = orderRepository.findById(dto.getOrderId());
-    if (order.isPresent()) {
-      orderDetail.setOrder(order.get());
-    }
+    order.ifPresent(orderDetail::setOrder);
     return OrderDetailMapper.INSTANCE.toDto(orderDetailRepository.save(orderDetail));
   }
 
@@ -45,9 +40,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     //    OrderDetail orderDetail = result.orElseGet(OrderDetail::new); should check for existence
     OrderDetail orderDetail = OrderDetailMapper.INSTANCE.toEntity(dto);
     Optional<Order> order = orderRepository.findById(dto.getOrderId());
-    if (order.isPresent()) {
-      orderDetail.setOrder(order.get());
-    }
+    order.ifPresent(orderDetail::setOrder);
     orderDetail.setId(id);
     return OrderDetailMapper.INSTANCE.toDto(orderDetailRepository.save(orderDetail));
   }
@@ -55,18 +48,12 @@ public class OrderDetailServiceImpl implements OrderDetailService {
   @Override
   public void deleteById(int id) {
     Optional<OrderDetail> result = orderDetailRepository.findById(id);
-    if (result.isPresent()) {
-      orderDetailRepository.deleteById(result.get().getId());
-    }
+    result.ifPresent(orderDetail -> orderDetailRepository.deleteById(orderDetail.getId()));
   }
 
   @Override
   public OrderDetailDto findById(int id) {
     Optional<OrderDetail> result = orderDetailRepository.findById(id);
-    if (result.isPresent()) {
-      return OrderDetailMapper.INSTANCE.toDto(result.get());
-    } else {
-      return null;
-    }
+    return result.map(OrderDetailMapper.INSTANCE::toDto).orElse(null);
   }
 }

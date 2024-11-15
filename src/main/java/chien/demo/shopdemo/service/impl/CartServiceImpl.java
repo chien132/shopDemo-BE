@@ -8,7 +8,6 @@ import chien.demo.shopdemo.repository.CartRepository;
 import chien.demo.shopdemo.service.CartService;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,9 +22,7 @@ public class CartServiceImpl implements CartService {
 
   @Override
   public List<CartDto> findAll() {
-    return cartRepository.findAll().stream()
-        .map(cart -> CartMapper.INSTANCE.toDto(cart))
-        .collect(Collectors.toList());
+    return CartMapper.INSTANCE.toDtoList(cartRepository.findAll());
   }
 
   @Override
@@ -46,19 +43,13 @@ public class CartServiceImpl implements CartService {
   @Override
   public void deleteById(int id) {
     Optional<Cart> result = cartRepository.findById(id);
-    if (result.isPresent()) {
-      cartRepository.deleteById(result.get().getId());
-    }
+    result.ifPresent(cart -> cartRepository.deleteById(cart.getId()));
   }
 
   @Override
   public CartDto findById(int id) {
     Optional<Cart> result = cartRepository.findById(id);
-    if (result.isPresent()) {
-      return CartMapper.INSTANCE.toDto(result.get());
-    } else {
-      return null;
-    }
+    return result.map(CartMapper.INSTANCE::toDto).orElse(null);
   }
 
   @Override
