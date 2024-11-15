@@ -6,6 +6,7 @@ import chien.demo.shopdemo.dto.OrderDetailDto;
 import chien.demo.shopdemo.dto.OrderDto;
 import chien.demo.shopdemo.exception.CartDetailNotFoundException;
 import chien.demo.shopdemo.exception.EmptyCartException;
+import chien.demo.shopdemo.security.services.UserDetailsImpl;
 import chien.demo.shopdemo.service.CartDetailService;
 import chien.demo.shopdemo.service.CartService;
 import chien.demo.shopdemo.service.OrderDetailService;
@@ -13,9 +14,11 @@ import chien.demo.shopdemo.service.OrderService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -72,7 +75,11 @@ public class OrderController {
    * @return the orders by customer id
    */
   @GetMapping("{id}")
-  public ResponseEntity<List<OrderDto>> getOrdersByCustomerId(@PathVariable(name = "id") int id) {
+  public ResponseEntity<List<OrderDto>> getOrdersByCustomerId(@PathVariable(name = "id") int id)
+          throws BadRequestException {
+    if (!((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId().equals(id)) {
+        throw new BadRequestException("What are you doing?");
+    }
     return ResponseEntity.ok(orderService.findAllByCustomerId(id));
   }
 

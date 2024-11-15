@@ -1,0 +1,58 @@
+spring:
+# H2 DB
+#  datasource:
+#    url: jdbc:h2:mem:myshopdb
+#    username: sa
+#    password: 123
+#    driverClassName: org.h2.Driver
+#  jpa:
+#    database-platform: org.hibernate.dialect.H2Dialect
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2console/
+#      settings:
+#        web-allow-others: true
+  #spring.jpa.hibernate.ddl-auto=create
+
+# mySQL DB
+  datasource:
+    url: jdbc:mysql://localhost:3306/shopdemodb
+    username: root
+    password: 12345
+  flyway:
+    enabled: true
+#    repair: true
+  jpa:
+#    generate-ddl: true
+#    hibernate.ddl-auto: create
+#    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+#    defer-datasource-initialization: true
+    show-sql: true
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#  sql:
+#    init:
+#      mode: always
+# Oracle
+# OracleDB connection settings
+#spring.datasource.url=jdbc:oracle:thin:@//host.docker.internal:1521/ORCLPDB1
+#spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+#spring.datasource.type=org.apache.tomcat.jdbc.pool.DataSource
+#spring.jpa.database-platform=org.hibernate.dialect.Oracle12cDialect
+#spring.jpa.hibernate.ddl-auto=update
+
+# App Properties
+openApi:
+  info:
+    title: My Shop API
+    version: 1.0
+    url: http://localhost:8080
+jwt:
+  jwtSecret: yaTPkD+Mu91G2L888suk/AukIrQfosN7Joo8A55mYtLPray8II4+yuV1NQ6/OD96suhlFvUjdn58
+  jwtExpirationMs: 86400000

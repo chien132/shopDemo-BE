@@ -1,5 +1,6 @@
 package chien.demo.shopdemo.exception;
 
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -104,5 +105,18 @@ public class ApiExceptionHandler {
   @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
   public ErrorMessage paymentFailureException(PaymentFailureException ex, WebRequest request) {
     return new ErrorMessage(401, "Payment failed!");
+  }
+
+  /**
+   * Payment failure exception error message.
+   *
+   * @param ex the ex
+   * @param request the request
+   * @return the error message
+   */
+  @ExceptionHandler(BadRequestException.class)
+  @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+  public ErrorMessage badRequestException(Exception ex, WebRequest request) {
+    return new ErrorMessage(400, ex.getMessage());
   }
 }

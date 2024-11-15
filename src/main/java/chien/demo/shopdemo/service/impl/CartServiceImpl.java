@@ -9,28 +9,29 @@ import chien.demo.shopdemo.service.CartService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /** The type Cart service. */
 @Service
+@RequiredArgsConstructor
 @Transactional(rollbackFor = Throwable.class)
 public class CartServiceImpl implements CartService {
 
-  @Autowired private CartRepository cartRepository;
+  private final CartRepository cartRepository;
 
   @Override
   public List<CartDto> findAll() {
     return cartRepository.findAll().stream()
-        .map(cart -> CartMapper.getInstance().toDto(cart))
+        .map(cart -> CartMapper.INSTANCE.toDto(cart))
         .collect(Collectors.toList());
   }
 
   @Override
   public CartDto create(CartDto dto) {
-    Cart cart = CartMapper.getInstance().toEntity(dto);
-    return CartMapper.getInstance().toDto(cartRepository.save(cart));
+    Cart cart = CartMapper.INSTANCE.toEntity(dto);
+    return CartMapper.INSTANCE.toDto(cartRepository.save(cart));
   }
 
   @Override
@@ -38,8 +39,8 @@ public class CartServiceImpl implements CartService {
     Optional<Cart> result = cartRepository.findById(id);
     Cart cart = result.orElseGet(Cart::new);
     cart.setId(id);
-    cart.setCustomer(CustomerMapper.getInstance().toEntity(dto.getCustomer()));
-    return CartMapper.getInstance().toDto(cartRepository.save(cart));
+    cart.setCustomer(CustomerMapper.INSTANCE.toEntity(dto.getCustomer()));
+    return CartMapper.INSTANCE.toDto(cartRepository.save(cart));
   }
 
   @Override
@@ -54,7 +55,7 @@ public class CartServiceImpl implements CartService {
   public CartDto findById(int id) {
     Optional<Cart> result = cartRepository.findById(id);
     if (result.isPresent()) {
-      return CartMapper.getInstance().toDto(result.get());
+      return CartMapper.INSTANCE.toDto(result.get());
     } else {
       return null;
     }
@@ -64,7 +65,7 @@ public class CartServiceImpl implements CartService {
   public CartDto findByCustomerId(int id) {
     Cart foundCart = cartRepository.findByCustomerId(id);
     if (foundCart != null) {
-      return CartMapper.getInstance().toDto(foundCart);
+      return CartMapper.INSTANCE.toDto(foundCart);
     } else {
       return null;
     }

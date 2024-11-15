@@ -14,6 +14,7 @@ import chien.demo.shopdemo.service.ItemService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/carts")
 @PreAuthorize("hasRole('CUSTOMER')")
+@Log4j2
 public class CartController {
   private final CartService cartService;
   private final CustomerService customerService;
@@ -89,8 +91,8 @@ public class CartController {
       throws CustomerNotFoundException, CartDetailNotFoundException, QuantityLessThanOneException {
     ItemDto item = itemService.findById(Integer.parseInt(values.get("itemId")));
     int quantity = Integer.parseInt(values.get("quantity"));
-    int customerid = Integer.parseInt(values.get("customerId"));
-    CustomerDto customerDto = customerService.findById(customerid);
+    int customerId = Integer.parseInt(values.get("customerId"));
+    CustomerDto customerDto = customerService.findById(customerId);
     CartDto foundCart = cartService.findByCustomerId(customerDto.getId());
     if (foundCart == null) {
       foundCart = cartService.create(new CartDto(0, customerDto, new ArrayList<>()));
@@ -106,11 +108,11 @@ public class CartController {
         }
         c.setQuantity(c.getQuantity() + quantity);
         cartDetailService.update(c.getId(), c.getQuantity());
-        return ResponseEntity.ok(cartService.findByCustomerId(customerid));
+        return ResponseEntity.ok(cartService.findByCustomerId(customerId));
       }
     }
     CartDetailDto cartDetail =
-        new CartDetailDto(0, foundCart.getId(), item, quantity, LocalDate.now());
+        new CartDetailDto(0, foundCart, item, quantity, LocalDate.now());
     foundCart.getCartDetails().add(cartDetailService.create(cartDetail));
     return ResponseEntity.ok(foundCart);
   }

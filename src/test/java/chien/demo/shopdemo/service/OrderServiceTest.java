@@ -41,7 +41,7 @@ class OrderServiceTest {
     orderDto =
         new OrderDto(
             1, new CustomerDto(1, "u", "p", true), LocalDate.now(), Collections.emptyList(), false);
-    order = OrderMapper.getInstance().toEntity(orderDto);
+    order = OrderMapper.INSTANCE.toEntity(orderDto);
   }
 
   @AfterEach
@@ -60,7 +60,7 @@ class OrderServiceTest {
     given(orderRepository.findAll())
         .willReturn(
             mockOrders.stream()
-                .map(o -> OrderMapper.getInstance().toEntity(o))
+                .map(o -> OrderMapper.INSTANCE.toEntity(o))
                 .collect(Collectors.toList()));
     List<OrderDto> actualOrders = orderService.findAll();
     assertThat(actualOrders).hasSameElementsAs(mockOrders);
@@ -77,7 +77,7 @@ class OrderServiceTest {
     given(orderRepository.findAllByCustomerIdOrderByIdDesc(customerDto.getId()))
         .willReturn(
             mockOrders.stream()
-                .map(o -> OrderMapper.getInstance().toEntity(o))
+                .map(o -> OrderMapper.INSTANCE.toEntity(o))
                 .collect(Collectors.toList()));
     List<OrderDto> actualOrders = orderService.findAllByCustomerId(customerDto.getId());
     assertThat(actualOrders).hasSameElementsAs(mockOrders);

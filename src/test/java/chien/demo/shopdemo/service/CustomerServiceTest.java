@@ -40,7 +40,7 @@ class CustomerServiceTest {
   @BeforeEach
   public void setUp() {
     customerDto = new CustomerDto(-11, "Username", "password", false);
-    customer = CustomerMapper.getInstance().toEntity(customerDto);
+    customer = CustomerMapper.INSTANCE.toEntity(customerDto);
   }
 
   @AfterEach
@@ -62,7 +62,7 @@ class CustomerServiceTest {
     given(customerRepository.findAll())
         .willReturn(
             mockCustomers.stream()
-                .map(customer -> CustomerMapper.getInstance().toEntity(customer))
+                .map(customer -> CustomerMapper.INSTANCE.toEntity(customer))
                 .collect(Collectors.toList()));
     // 3. call service method
     List<CustomerDto> actualCustomers = customerService.findAll();

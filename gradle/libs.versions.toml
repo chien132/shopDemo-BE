@@ -1,0 +1,33 @@
+[versions]
+springDependencyManagement = "1.1.6"
+springBoot = "3.3.5"
+jjwt = "0.12.6"
+lombok = "1.18.34"
+h2 = "2.3.232"
+ojdbc8 = "21.9.0.0"
+tomcatJdbc = "11.0.0"
+mysqlConnector = "8.0.33"
+flyway = "10.10.0"
+flywayMysql = "10.10.0"
+mapstruct = "1.5.5.Final"
+swagger = "2.6.0"
+
+[libraries]
+springBootStarterDataJpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "springBoot" }
+springBootStarterWeb = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "springBoot" }
+springBootStarterSecurity = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "springBoot" }
+springBootStarterValidation = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "springBoot" }
+jjwt = { module = "io.jsonwebtoken:jjwt", version.ref = "jjwt" }
+tomcatJdbc = { module = "org.apache.tomcat:tomcat-jdbc", version.ref = "tomcatJdbc" }
+ojdbc8 = { module = "com.oracle.database.jdbc:ojdbc8", version.ref = "ojdbc8" }
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+h2 = { module = "com.h2database:h2", version.ref = "h2" }
+springBootStarterTest = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "springBoot" }
+mysqlConnector = { module = "mysql:mysql-connector-java", version.ref = "mysqlConnector" }
+flyway = { module = 'org.flywaydb:flyway-core', version.ref = 'flyway' }
+flywayMysql = { module = 'org.flywaydb:flyway-mysql', version.ref = 'flywayMysql' }
+mapstruct = { module = 'org.mapstruct:mapstruct', version.ref = 'mapstruct' }
+mapstructProcessor = { module = 'org.mapstruct:mapstruct-processor', version.ref = 'mapstruct' }
+log4j2 = { module = 'org.springframework.boot:spring-boot-starter-log4j2', version.ref = 'springBoot' }
+swagger = { module = 'org.springdoc:springdoc-openapi-starter-webmvc-ui', version.ref = 'swagger' }
+devtools = { module = 'org.springframework.boot:spring-boot-devtools', version.ref = 'springBoot' }

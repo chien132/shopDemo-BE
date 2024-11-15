@@ -1,8 +1,8 @@
 package chien.demo.shopdemo.security.services;
 
+import lombok.RequiredArgsConstructor;
 import chien.demo.shopdemo.model.Customer;
 import chien.demo.shopdemo.repository.CustomerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,8 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 /** User details service. */
 @Service
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-  @Autowired CustomerRepository customerRepository;
+
+  private final CustomerRepository customerRepository;
 
   @Override
   @Transactional

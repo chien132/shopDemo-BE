@@ -37,7 +37,7 @@ class CartServiceTest {
   @BeforeEach
   void setUp() {
     cartDto = new CartDto(1, new CustomerDto(1, "u", "p", true), Collections.emptyList());
-    cart = CartMapper.getInstance().toEntity(cartDto);
+    cart = CartMapper.INSTANCE.toEntity(cartDto);
   }
 
   @AfterEach
@@ -56,7 +56,7 @@ class CartServiceTest {
     given(cartRepository.findAll())
         .willReturn(
             mockCarts.stream()
-                .map(c -> CartMapper.getInstance().toEntity(c))
+                .map(c -> CartMapper.INSTANCE.toEntity(c))
                 .collect(Collectors.toList()));
     List<CartDto> actualCarts = cartService.findAll();
     assertThat(actualCarts).hasSameElementsAs(mockCarts);

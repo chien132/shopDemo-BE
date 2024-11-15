@@ -49,8 +49,8 @@ class OrderDetailServiceTest {
             1, new CustomerDto(1, "u", "p", true), LocalDate.now(), Collections.emptyList(), false);
     itemDto = new ItemDto(1, "Item", 123);
     orderDetailDto = new OrderDetailDto(1, orderDto.getId(), itemDto, 2);
-    orderDetail = OrderDetailMapper.getInstance().toEntity(orderDetailDto);
-    orderDetail.setOrder(OrderMapper.getInstance().toEntity(orderDto));
+    orderDetail = OrderDetailMapper.INSTANCE.toEntity(orderDetailDto);
+    orderDetail.setOrder(OrderMapper.INSTANCE.toEntity(orderDto));
   }
 
   @AfterEach
@@ -69,7 +69,7 @@ class OrderDetailServiceTest {
     }
     List<OrderDetail> expectList =
         mockList.stream()
-            .map(orderDetailDto -> OrderDetailMapper.getInstance().toEntity(orderDetailDto))
+            .map(orderDetailDto -> OrderDetailMapper.INSTANCE.toEntity(orderDetailDto))
             .collect(Collectors.toList());
     for (int i = 0; i < mockList.size(); i++) {
       expectList.get(i).setOrder(orderDetail.getOrder());

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="DEBUG" packages="chien.demo.shopdemo.configuration">
+    <Properties>
+        <Property name="LOG_PATTERN_INFO">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %highlight{[${LOG_LEVEL_PATTERN:-%5p}]} %style{%-35.35C{1.}} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</Property>
+        <Property name="LOG_PATTERN_ERROR">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %highlight{[${LOG_LEVEL_PATTERN:-%5p}]} %style{%-35.35C{1.}} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</Property>
+        <Property name="LOG_PATTERN_WARN">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %highlight{[${LOG_LEVEL_PATTERN:-%5p}]} %style{%-35.35C{1.}} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</Property>
+        <Property name="LOG_PATTERN_DEBUG">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %highlight{[${LOG_LEVEL_PATTERN:-%5p}]} %style{%-35.35C{1.}} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</Property>
+        <Property name="LOG_PATTERN_CONSOLE">%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} %highlight{[${LOG_LEVEL_PATTERN:-%5p}]}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=green, DEBUG=green bold, TRACE=blue} %style{%-35.35C{1.}}{cyan} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</Property>
+        <Property name="logSystemPath">/opt/shopdemo/logs</Property>
+    </Properties>
+    <Appenders>
+        <Console name="system_console" target="SYSTEM_OUT">
+            <PatternLayout disableAnsi="false" pattern="${LOG_PATTERN_CONSOLE}"/>
+        </Console>
+
+        <RollingFile name="system_error"
+                     fileName="${logSystemPath}/today/error.log"
+                     filePattern="${logSystemPath}/%d{yyyyMMdd}/error.log">
+            <PatternLayout pattern="${LOG_PATTERN_ERROR}"/>
+            <Policies>
+                <CronTriggeringPolicy schedule="59 59 23 * * ? *" evaluateOnStartup="true"/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="19500KB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="7"/>
+            <Filters>
+                <ThresholdFilter level="FATAL" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingFile>
+
+        <RollingFile name="system_warn"
+                     fileName="${logSystemPath}/today/warn.log"
+                     filePattern="${logSystemPath}/%d{yyyyMMdd}/warn.log">
+            <PatternLayout pattern="${LOG_PATTERN_WARN}"/>
+            <Policies>
+                <CronTriggeringPolicy schedule="59 59 23 * * ? *" evaluateOnStartup="true"/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="19500KB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="7"/>
+            <Filters>
+                <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingFile>
+
+        <RollingFile name="system_info"
+                     fileName="${logSystemPath}/today/info.log"
+                     filePattern="${logSystemPath}/%d{yyyyMMdd}/info.log">
+            <PatternLayout pattern="${LOG_PATTERN_INFO}"/>
+            <Policies>
+                <CronTriggeringPolicy schedule="59 59 23 * * ? *" evaluateOnStartup="true"/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="19500KB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="7"/>
+            <Filters>
+                <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingFile>
+
+        <RollingFile name="system_debug"
+                     fileName="${logSystemPath}/today/debug.log"
+                     filePattern="${logSystemPath}/%d{yyyyMMdd}debug.log">
+            <PatternLayout pattern="${LOG_PATTERN_DEBUG}"/>
+            <Policies>
+                <CronTriggeringPolicy schedule="59 59 23 * * ? *" evaluateOnStartup="true"/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="19500KB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="7"/>
+            <Filters>
+                <ThresholdFilter level="INFO" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="chien.demo.shopdemo" additivity="false" level="TRACE">
+            <AppenderRef ref="system_console"/>
+            <AppenderRef ref="system_debug"/>
+            <AppenderRef ref="system_info"/>
+            <AppenderRef ref="system_warn"/>
+            <AppenderRef ref="system_error"/>
+        </Logger>
+        <Root level="ERROR">
+            <AppenderRef ref="system_console"/>
+        </Root>
+    </Loggers>
+</Configuration>

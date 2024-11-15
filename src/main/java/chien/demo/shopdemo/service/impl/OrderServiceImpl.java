@@ -9,35 +9,36 @@ import chien.demo.shopdemo.service.OrderService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /** The type Order service. */
+@RequiredArgsConstructor
 @Service
 @Transactional(rollbackFor = Throwable.class)
 public class OrderServiceImpl implements OrderService {
 
-  @Autowired private OrderRepository orderRepository;
+  private final OrderRepository orderRepository;
 
   @Override
   public List<OrderDto> findAll() {
     return orderRepository.findAll().stream()
-        .map(order -> OrderMapper.getInstance().toDto(order))
+        .map(order -> OrderMapper.INSTANCE.toDto(order))
         .collect(Collectors.toList());
   }
 
   @Override
   public List<OrderDto> findAllByCustomerId(int id) {
     return orderRepository.findAllByCustomerIdOrderByIdDesc(id).stream()
-        .map(order -> OrderMapper.getInstance().toDto(order))
+        .map(order -> OrderMapper.INSTANCE.toDto(order))
         .collect(Collectors.toList());
   }
 
   @Override
   public OrderDto create(OrderDto dto) {
-    Order order = OrderMapper.getInstance().toEntity(dto);
-    return OrderMapper.getInstance().toDto(orderRepository.save(order));
+    Order order = OrderMapper.INSTANCE.toEntity(dto);
+    return OrderMapper.INSTANCE.toDto(orderRepository.save(order));
   }
 
   @Override
@@ -45,10 +46,10 @@ public class OrderServiceImpl implements OrderService {
     Optional<Order> result = orderRepository.findById(id);
     Order order = result.orElseGet(Order::new);
     order.setId(id);
-    order.setCustomer(CustomerMapper.getInstance().toEntity(dto.getCustomer()));
+    order.setCustomer(CustomerMapper.INSTANCE.toEntity(dto.getCustomer()));
     order.setOrderDate(dto.getOrderDate());
     order.setCompleted(dto.isCompleted());
-    return OrderMapper.getInstance().toDto(orderRepository.save(order));
+    return OrderMapper.INSTANCE.toDto(orderRepository.save(order));
   }
 
   @Override
@@ -63,7 +64,7 @@ public class OrderServiceImpl implements OrderService {
   public OrderDto findById(int id) {
     Optional<Order> result = orderRepository.findById(id);
     if (result.isPresent()) {
-      return OrderMapper.getInstance().toDto(result.get());
+      return OrderMapper.INSTANCE.toDto(result.get());
     } else {
       return null;
     }
@@ -73,7 +74,7 @@ public class OrderServiceImpl implements OrderService {
   public OrderDto findLatestByCustomerId(int customerId) {
     Optional<Order> result = orderRepository.findLatestByCustomerId(customerId);
     if (result.isPresent()) {
-      return OrderMapper.getInstance().toDto(result.get());
+      return OrderMapper.INSTANCE.toDto(result.get());
     } else {
       return null;
     }

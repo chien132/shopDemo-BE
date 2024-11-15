@@ -8,15 +8,16 @@ import chien.demo.shopdemo.repository.CustomerRepository;
 import chien.demo.shopdemo.service.CustomerService;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /** The type Customer service. */
+@RequiredArgsConstructor
 @Service
 @Transactional(rollbackFor = Throwable.class)
 public class CustomerServiceImpl implements CustomerService {
-  @Autowired private CustomerRepository customerRepository;
+  private final CustomerRepository customerRepository;
 
   @Override
   public boolean existsByUsername(String username) {
@@ -26,14 +27,14 @@ public class CustomerServiceImpl implements CustomerService {
   @Override
   public List<CustomerDto> findAll() {
     return customerRepository.findAll().stream()
-        .map(customer -> CustomerMapper.getInstance().toDto(customer))
+        .map(customer -> CustomerMapper.INSTANCE.toDto(customer))
         .collect(Collectors.toList());
   }
 
   @Override
   public CustomerDto create(CustomerDto dto) {
-    Customer customer = CustomerMapper.getInstance().toEntity(dto);
-    return CustomerMapper.getInstance().toDto(customerRepository.save(customer));
+    Customer customer = CustomerMapper.INSTANCE.toEntity(dto);
+    return CustomerMapper.INSTANCE.toDto(customerRepository.save(customer));
   }
 
   @Override
@@ -43,7 +44,7 @@ public class CustomerServiceImpl implements CustomerService {
     dbCustomer.setUsername(dto.getUsername());
     dbCustomer.setPassword(dto.getPassword());
     dbCustomer.setType(dto.isType());
-    return CustomerMapper.getInstance().toDto(customerRepository.save(dbCustomer));
+    return CustomerMapper.INSTANCE.toDto(customerRepository.save(dbCustomer));
   }
 
   @Override
@@ -57,6 +58,6 @@ public class CustomerServiceImpl implements CustomerService {
   public CustomerDto findById(int id) throws CustomerNotFoundException {
     Customer customer =
         customerRepository.findById(id).orElseThrow(() -> new CustomerNotFoundException(id));
-    return CustomerMapper.getInstance().toDto(customer);
+    return CustomerMapper.INSTANCE.toDto(customer);
   }
 }

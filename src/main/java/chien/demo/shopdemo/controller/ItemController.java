@@ -4,11 +4,16 @@ import chien.demo.shopdemo.dto.ItemDto;
 import chien.demo.shopdemo.exception.ItemCascadeDeleteError;
 import chien.demo.shopdemo.exception.ItemNotFoundException;
 import chien.demo.shopdemo.service.ItemService;
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/items")
 public class ItemController {
+  private static final Logger LOGGER = LoggerFactory.getLogger(ItemController.class);
   private final ItemService itemService;
 
   @Autowired
@@ -154,6 +160,23 @@ public class ItemController {
       return ResponseEntity.ok().build();
     } else {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+  }
+
+  /**
+   * Download report file.
+   *
+   * @return the file
+   */
+  @GetMapping("/download")
+  @PreAuthorize("hasRole('OWNER')")
+  public ResponseEntity<Resource> downloadItems() {
+    try {
+      ByteArrayOutputStream baos = itemService.downloadItems();
+      Resource resource = new ByteArrayResource(baos.toByteArray());
+      return ResponseEntity.ok(resource);
+    } catch (Exception e) {
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

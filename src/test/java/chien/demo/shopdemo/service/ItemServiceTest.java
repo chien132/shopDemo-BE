@@ -37,7 +37,7 @@ class ItemServiceTest {
   @BeforeEach
   void setUp() {
     itemDto = new ItemDto(1, "Test", 123);
-    item = ItemMapper.getInstance().toEntity(itemDto);
+    item = ItemMapper.INSTANCE.toEntity(itemDto);
   }
 
   @AfterEach
@@ -55,7 +55,7 @@ class ItemServiceTest {
     given(itemRepository.findAll())
         .willReturn(
             mockItems.stream()
-                .map(itemDto -> ItemMapper.getInstance().toEntity(itemDto))
+                .map(itemDto -> ItemMapper.INSTANCE.toEntity(itemDto))
                 .collect(Collectors.toList()));
     List<ItemDto> actualItems = itemService.findAll();
     assertThat(mockItems).hasSameElementsAs(actualItems);

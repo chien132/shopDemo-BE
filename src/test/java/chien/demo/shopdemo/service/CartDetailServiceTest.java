@@ -46,9 +46,9 @@ class CartDetailServiceTest {
   void setUp() {
     cartDto = new CartDto(1, new CustomerDto(1, "u", "p", true), Collections.emptyList());
     itemDto = new ItemDto(1, "Item test", 215);
-    cartDetailDto = new CartDetailDto(1, cartDto.getId(), itemDto, 12, LocalDate.now());
-    cartDetail = CartDetailMapper.getInstance().toEntity(cartDetailDto);
-    cartDetail.setCart(CartMapper.getInstance().toEntity(cartDto));
+    cartDetailDto = new CartDetailDto(1, cartDto, itemDto, 12, LocalDate.now());
+    cartDetail = CartDetailMapper.INSTANCE.toEntity(cartDetailDto);
+    cartDetail.setCart(CartMapper.INSTANCE.toEntity(cartDto));
   }
 
   @AfterEach
@@ -63,11 +63,11 @@ class CartDetailServiceTest {
   void whenFindAll_shouldReturnList() {
     List<CartDetailDto> mockCartDetails = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
-      mockCartDetails.add(new CartDetailDto(i, cartDto.getId(), itemDto, i * 2, LocalDate.now()));
+      mockCartDetails.add(new CartDetailDto(i, cartDto, itemDto, i * 2, LocalDate.now()));
     }
     List<CartDetail> expectCartDetails =
         mockCartDetails.stream()
-            .map(cd -> CartDetailMapper.getInstance().toEntity(cd))
+            .map(cd -> CartDetailMapper.INSTANCE.toEntity(cd))
             .collect(Collectors.toList());
     for (CartDetail cartDetail1 : expectCartDetails) {
       cartDetail1.setCart(cartDetail.getCart());

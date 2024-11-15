@@ -7,14 +7,15 @@ import chien.demo.shopdemo.security.services.UserDetailsImpl;
 import chien.demo.shopdemo.service.CustomerService;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -71,14 +72,10 @@ public class AuthController {
     SecurityContextHolder.getContext().setAuthentication(authentication);
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-    String role =
-        userDetails.getAuthorities().stream()
-            .map(item -> item.getAuthority())
-            .collect(Collectors.toList())
-            .get(0);
+    List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
     Map<String, Object> claims = new HashMap<>();
     claims.put("id", userDetails.getId());
-    claims.put("role", role);
+    claims.put("role", roles.getFirst());
     String jwt = jwtUtils.generateJwtToken(authentication, claims);
     return ResponseEntity.ok(Collections.singletonMap("token", jwt));
   }
